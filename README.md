@@ -10,3 +10,6 @@ We use the [`torchvision vit_b_16`](https://pytorch.org/vision/main/models/gener
 * [ ] Benchmark CPU and GPU usage on a single-node and across multiple nodes
 * [ ] Investigate Tensorboard visualization
 * [ ] more points to be added soon
+
+## HDF5 support
+The imagenet dataset consists of hundreds of thousands of single jpg files. To avoid the "many small files" problem the datasets can be transformed into a single HDF5 file with the script `turn_into_hdf5.py`. Note, that this increases the size of the data by one order of magnitude as this script does not compress the data in any form. 
