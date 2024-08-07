@@ -9,3 +9,35 @@ The imagenet dataset consists of hundreds of thousands of single jpg files. To a
 
 ## Running script on LUMI
 This github repo is cloned to `/project/project_462000002/LUMI-AI-example`. Training data, validation data, and the parameters of the model are in the same directory. The used container is extended via a virtual environment, as described [here](https://github.com/Lumi-supercomputer/Getting_Started_with_AI_workshop/blob/main/07_Extending_containers_with_virtual_environments_for_faster_testing/examples/extending_containers_with_venv.md), since `h5py` is not included in the container. Anyone is welcome to work in that directory in order to minimize data storage, but please create a new branch.
+
+
+## Building website
+
+Install the needed dependencies.
+
+```
+pip install -r requirements.txt
+```
+
+### Edit with live preview
+
+run 
+
+```
+mkdocs serve
+```
+
+This command will start a live-reloading local web server that can be accessed
+in a web browser via: http://127.0.0.1:8000. The local web serve will 
+automatically re-render and reload the site when you edit the documentation.
+
+
+### Generate the static site
+
+To build a self-contained directory containing the full website run:
+
+```
+mkdocs build
+```
+
+The generated files will be located in the `site/` directory.
