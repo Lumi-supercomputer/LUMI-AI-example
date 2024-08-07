@@ -1,0 +1,87 @@
+site_name: Machine learning guide
+repo_url: ""
+edit_uri: ""
+#site_url: "https://test-lumi-supercomputer-docs.rahtiapp.fi/" #hasn't been chosen yet
+site_description: >-
+  This guide provides information on how to use the LUMI supercomputer for machine learning tasks.
+copyright: Copyright &copy; 2021 LUMI User Support Team
+nav:
+      - ML containers: containers.md
+      - Data storage: data_storage.md
+      - File formats: file_formats.md
+      - Multi-GPU and Multi-node: multi_gpu_and_node.md
+      - Profiling and debugging: profiling_and_debugging.md
+      - TensorBoard visualization: visualization.md
+    
+ 
+theme:
+  name: material
+  greetings: Welcome to the LUMI Machine Learning Guide
+  custom_dir: mkdocs_lumi/
+  language: en
+  features:
+    # - navigation.instant
+    - navigation.tabs
+    - navigation.sections
+    - search.suggest
+    - content.code.annotate
+  
+  palette:
+    scheme: default
+    primary: lumi
+    accent: lumi
+
+  font: false
+  
+  favicon: assets/favicon.png
+
+  icon:
+    logo: logo
+  
+  home_primary:
+    title: Get Started
+    page: firststeps/getstarted/
+  home_secondary:
+    title: To LUMI Main Page
+    page: https://lumi-supercomputer.eu/
+
+extra:
+  social:
+    - icon: fontawesome/brands/github
+      link: https://github.com/Lumi-supercomputer/LUMI-AI-example
+    - icon: fontawesome/brands/twitter
+      link: https://twitter.com/LUMIhpc
+
+markdown_extensions:
+  - toc:
+      toc_depth: 3
+      permalink: true
+      permalink_title: Anchor link to this section for reference
+  - admonition
+  - md_in_html
+  - attr_list
+  - footnotes
+  - pymdownx.details
+  - pymdownx.tabbed:
+      alternate_style: true
+  - pymdownx.superfences:
+      custom_fences:
+        - name: mermaid
+          class: mermaid
+          format: !!python/name:pymdownx.superfences.fence_code_format
+  - pymdownx.highlight:
+      anchor_linenums: true
+  - pymdownx.inlinehilite
+  - pymdownx.snippets
+  - pymdownx.keys
+  - pymdownx.emoji:
+      emoji_index: !!python/name:material.extensions.emoji.twemoji
+      emoji_generator: !!python/name:material.extensions.emoji.to_svg
+
+# plugins:
+#   - redirects:
+#       redirect_maps:
+#         'computing/Lmod_modules.md': 'runjobs/lumi_env/Lmod_modules.md'
+#         'firststeps/getstarted.md': 'firststeps/index.md'
+#         'software/packages/pytorch.md': 'https://lumi-supercomputer.github.io/LUMI-EasyBuild-docs/p/PyTorch/'
+#   - search
