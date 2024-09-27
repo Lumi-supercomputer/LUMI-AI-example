@@ -1,16 +1,19 @@
 # LUMI Machine learning guide
 
-This guide aims to help users to migrate their machine learning applications from smaller-scale computing environments or cloud computing providers to LUMI. We provide a basic A-Z example of training an image classification model using [PyTorch's Vision Transformer (VIT)](https://pytorch.org/vision/main/models/vision_transformer.html) on the [ImageNet dataset](https://www.image-net.org/). 
+This guide is designed to assist users in migrating their machine learning applications from smaller-scale computing environments or various cloud computing providers to LUMI. We will walk you through a detailed example of training an image classification model using [PyTorch's Vision Transformer (VIT)](https://pytorch.org/vision/main/models/vision_transformer.html) on the [ImageNet dataset](https://www.image-net.org/).
 
-The Python and bash scripts used in this guide are available in this [GitHub repository](https://github.com/Lumi-supercomputer/LUMI-AI-example/tree/main).
+All Python and bash scripts referenced in this guide are accessible in this [GitHub repository](https://github.com/Lumi-supercomputer/LUMI-AI-example/tree/main).
 
 ### Requirements
 
-This guide assumes the users have a basic understanding of machine learning and Python programming as it focuses on LUMI-specific aspects of training machine learning models. It is also assumed that the users have a user account on LUMI and are familiar with the basic usage of the LUMI supercomputer.
+Before proceeding, please ensure you meet the following prerequisites:
+
+* A basic understanding of machine learning concepts and Python programming. This guide will focus primarily on aspects specific to training models on LUMI.
+* An active user account on LUMI and familiarity with its basic operations.
 
 ### Table of contents
 
-This guide contains the following subsections:
+The guide is structured into the following sections:
 
 - [Installing Python packages in a container](containers.md)
 - [Storage options for training data](data_storage.md)
