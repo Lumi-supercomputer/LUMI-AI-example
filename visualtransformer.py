@@ -1,9 +1,7 @@
 import torch
-import torchvision
 import torchvision.transforms as transforms
 from torchvision.models import vit_b_16
 from torch.utils.data import DataLoader
-from torchvision.datasets import ImageFolder
 
 from hdf5_dataset import HDF5Dataset
 
@@ -19,6 +17,7 @@ model = vit_b_16(weights=None)
 
 criterion = torch.nn.CrossEntropyLoss()
 optimizer = torch.optim.Adam(model.parameters(), lr=0.001)
+
 
 def train_model(model, criterion, optimizer, train_loader, val_loader, epochs=10):
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
@@ -53,6 +52,7 @@ def train_model(model, criterion, optimizer, train_loader, val_loader, epochs=10
                 correct += (predicted == labels).sum().item()
 
         print(f'Accuracy: {100 * correct / total}%')
+
 
 with HDF5Dataset('train_images.hdf5', transform=transform) as train_dataset, \
      HDF5Dataset('val_images.hdf5', transform=transform) as val_dataset:
