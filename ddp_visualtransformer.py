@@ -27,10 +27,11 @@ model = vit_b_16(weights=None).to(local_rank)
 model = DistributedDataParallel(model, device_ids=[local_rank])
 
 criterion = torch.nn.CrossEntropyLoss()
-optimizer = torch.optim.Adam(model.parameters(), lr=0.001)
+optimizer = torch.optim.Adam(model.parameters(), lr=0.01)
+scheduler = torch.optim.lr_scheduler.StepLR(optimizer, step_size=2, gamma=0.1)
 
 
-def train_model(model, criterion, optimizer, train_loader, val_loader, epochs=10):
+def train_model(model, criterion, optimizer, scheduler, train_loader, val_loader, epochs=10):
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
     model.to(device)
 
@@ -65,25 +66,25 @@ def train_model(model, criterion, optimizer, train_loader, val_loader, epochs=10
 
         if rank == 0:
             print(f'Accuracy: {100 * correct / total}%')
+        scheduler.step()
 
 
 with HDF5Dataset('train_images.hdf5', transform=transform) as train_dataset, \
      HDF5Dataset('val_images.hdf5', transform=transform) as val_dataset:
 
     from torch.utils.data import Subset
-    fraction = 0.1
+    fraction = 1.0
     indices = torch.randperm(len(train_dataset))[:int(len(train_dataset) * fraction)]
     reduced_train_dataset = Subset(train_dataset, indices)
     train_sampler = DistributedSampler(reduced_train_dataset)
-    train_loader = DataLoader(reduced_train_dataset, sampler=train_sampler, batch_size=32, num_workers=7)
+    train_loader = DataLoader(reduced_train_dataset, sampler=train_sampler, batch_size=8, num_workers=7)
 
     indices = torch.randperm(len(val_dataset))[:int(len(val_dataset) * fraction)]
     reduced_val_dataset = Subset(val_dataset, indices)
     val_sampler = DistributedSampler(reduced_val_dataset)
-    val_loader = DataLoader(reduced_val_dataset, sampler=val_sampler, batch_size=32, num_workers=7)
+    val_loader = DataLoader(reduced_val_dataset, sampler=val_sampler, batch_size=8, num_workers=7)
 
-    if rank == 0:
-        train_model(model, criterion, optimizer, train_loader, val_loader)
+    train_model(model, criterion, optimizer, scheduler, train_loader, val_loader)
 
     dist.destroy_process_group()
 
