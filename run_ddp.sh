@@ -9,6 +9,10 @@
 
 export OMP_NUM_THREADS=7
 
-CONTAINER=/appl/local/containers/sif-images/lumi-pytorch-rocm-6.2.0-python-3.12-pytorch-20240801-vllm-baaedfd.sif
+# shortcut for getting the binds right
+module use /appl/local/training/modules/AI-20240529
+module load singularity-userfilesystems singularity-CPEbits
 
-srun singularity exec --bind /pfs,/scratch,/projappl,/project,/flash,/appl $CONTAINER bash -c '$WITH_CONDA && source myenv_post_upgrade/bin/activate && python -m torch.distributed.run --standalone --nnodes=1 --nproc_per_node=8 ddp_visualtransformer.py'
+CONTAINER=/appl/local/containers/sif-images/lumi-pytorch-rocm-6.2.1-python-3.12-pytorch-20240918-vllm-4075b35.sif
+
+srun singularity exec $CONTAINER bash -c '$WITH_CONDA && source myenv_post_upgrade/bin/activate && python -m torch.distributed.run --standalone --nnodes=1 --nproc_per_node=8 ddp_visualtransformer.py'
