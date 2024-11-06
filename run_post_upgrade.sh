@@ -1,8 +1,8 @@
 #!/bin/bash
 #SBATCH --account=project_462000002
-#SBATCH --partition=small-g
+#SBATCH --partition=dev-g
+#SBATCH --ntasks=1
 #SBATCH --gpus-per-node=1
-#SBATCH --ntasks-per-node=1
 #SBATCH --cpus-per-task=7
 #SBATCH --mem-per-gpu=60G
 #SBATCH --time=1:00:00
@@ -13,4 +13,11 @@ module load singularity-userfilesystems singularity-CPEbits
 
 CONTAINER=/appl/local/containers/sif-images/lumi-pytorch-rocm-6.2.1-python-3.12-pytorch-20240918-vllm-4075b35.sif
 
-srun singularity exec $CONTAINER bash -c '$WITH_CONDA && source myenv_post_upgrade/bin/activate && python visualtransformer.py'
+export MPICH_MPIIO_STATS=1
+export MPICH_MEMORY_REPORT=1
+
+srun singularity exec $CONTAINER bash -c '$WITH_CONDA && source venv-extension/bin/activate && python scripts/lmdb/visualtransformer-lmdb.py'
+# srun singularity exec $CONTAINER bash -c '$WITH_CONDA && source venv-extension/bin/activate && python scripts/hdf5/visualtransformer-hdf5.py'
+# srun singularity exec $CONTAINER bash -c '$WITH_CONDA && source venv-extension/bin/activate && python scripts/tfrecords/visualtransformer-tfrecords.py'
+
+# srun singularity exec $CONTAINER bash -c '$WITH_CONDA && source venv-extension/bin/activate && python scripts/tar/visualtransformer-tar.py'
