@@ -19,5 +19,5 @@ export MPICH_MEMORY_REPORT=1
 srun singularity exec $CONTAINER bash -c '$WITH_CONDA && source venv-extension/bin/activate && python scripts/lmdb/visualtransformer-lmdb.py'
 # srun singularity exec $CONTAINER bash -c '$WITH_CONDA && source venv-extension/bin/activate && python scripts/hdf5/visualtransformer-hdf5.py'
 # srun singularity exec $CONTAINER bash -c '$WITH_CONDA && source venv-extension/bin/activate && python scripts/tfrecords/visualtransformer-tfrecords.py'
-
+srun singularity exec -B data-formats/squashfs/train.squashfs:/train_images:image-src=/,data-formats/squashfs/val.squashfs:/val_images:image-src=/ $CONTAINER bash -c '$WITH_CONDA && source venv-extension/bin/activate && python scripts/squashfs/visualtransformer-squashfs.py'
 # srun singularity exec $CONTAINER bash -c '$WITH_CONDA && source venv-extension/bin/activate && python scripts/tar/visualtransformer-tar.py'

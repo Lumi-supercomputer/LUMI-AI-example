@@ -6,4 +6,4 @@ download:
 	./get_data.sh
 
 convert:
-	./convert.sh
+	sbatch convert.sh && sbatch scripts/squashfs/convert_to_squashfs.sh
