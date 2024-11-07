@@ -60,7 +60,7 @@ def train_model(model, criterion, optimizer, train_loader, val_loader, epochs=10
                 correct += (predicted == labels).sum().item()
 
         print(f'HDF5 Accuracy: {100 * correct / total}%')
-        if prof:
+        if epoch == 3:
             prof.stop()
             prof.export_chrome_trace("hdf5-trace.json")
 

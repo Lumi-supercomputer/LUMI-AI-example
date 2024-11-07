@@ -1,5 +1,6 @@
 import torch
 import torchvision.transforms as transforms
+from torch.profiler import profile, record_function, ProfilerActivity
 from torchvision.models import vit_b_16
 from torch.utils.data import DataLoader
 import sys
@@ -35,8 +36,12 @@ optimizer = torch.optim.Adam(model.parameters(), lr=0.001)
 def train_model(model, criterion, optimizer, train_loader, val_loader, epochs=10):
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
     model.to(device)
-
+    prof = None
     for epoch in range(epochs):
+        if epoch == 3:
+            prof = profile(activities=[ProfilerActivity.CPU, ProfilerActivity.CUDA])
+            prof.start()
+
         model.train()
         running_loss = 0.0
         for images, labels in train_loader:
@@ -65,6 +70,9 @@ def train_model(model, criterion, optimizer, train_loader, val_loader, epochs=10
                 correct += (predicted == labels).sum().item()
 
         print(f'tfrecords Accuracy: {100 * correct / total}%')
+        if epoch == 3:
+            prof.stop()
+            prof.export_chrome_trace("tfrecords-trace.json")
 
 @time('visualtransformer-tfrecords')
 def main():
