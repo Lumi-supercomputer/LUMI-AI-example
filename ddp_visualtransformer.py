@@ -2,7 +2,7 @@ import torch
 import os
 import torchvision.transforms as transforms
 from torchvision.models import vit_b_16
-from torch.utils.data import DataLoader
+from torch.utils.data import DataLoader, random_split
 from torch.nn.parallel import DistributedDataParallel
 from hdf5_dataset import HDF5Dataset
 import torch.distributed as dist
@@ -10,6 +10,7 @@ from torch.utils.data.distributed import DistributedSampler
 import psutil
 
 
+# The performance of the CPU mapping needs to be tested
 def set_cpu_affinity(local_rank):
     LUMI_GPU_CPU_map = {
         # A mapping from GCD to the closest CPU cores in a LUMI-G node
@@ -46,15 +47,14 @@ transform = transforms.Compose([
 ])
 
 
-model = vit_b_16(weights=None).to(local_rank)
+model = vit_b_16(weights='DEFAULT').to(local_rank)
 model = DistributedDataParallel(model, device_ids=[local_rank])
 
 criterion = torch.nn.CrossEntropyLoss()
-optimizer = torch.optim.Adam(model.parameters(), lr=0.01)
-scheduler = torch.optim.lr_scheduler.StepLR(optimizer, step_size=2, gamma=0.1)
+optimizer = torch.optim.Adam(model.parameters(), lr=0.001)
 
 
-def train_model(model, criterion, optimizer, scheduler, train_loader, val_loader, epochs=10):
+def train_model(model, criterion, optimizer, train_loader, val_loader, epochs=10):
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
     model.to(device)
 
@@ -89,25 +89,22 @@ def train_model(model, criterion, optimizer, scheduler, train_loader, val_loader
 
         if rank == 0:
             print(f'Accuracy: {100 * correct / total}%')
-        scheduler.step()
 
 
-with HDF5Dataset('train_images.hdf5', transform=transform) as train_dataset, \
-     HDF5Dataset('val_images.hdf5', transform=transform) as val_dataset:
+with HDF5Dataset('train_images.hdf5', transform=transform) as full_train_dataset:
 
-    from torch.utils.data import Subset
-    fraction = 1.0
-    indices = torch.randperm(len(train_dataset))[:int(len(train_dataset) * fraction)]
-    reduced_train_dataset = Subset(train_dataset, indices)
-    train_sampler = DistributedSampler(reduced_train_dataset)
-    train_loader = DataLoader(reduced_train_dataset, sampler=train_sampler, batch_size=8, num_workers=7)
+    # Splitting the dataset into train and validation sets
+    train_size = int(0.8 * len(full_train_dataset))
+    val_size = len(full_train_dataset) - train_size
+    train_dataset, val_dataset = random_split(full_train_dataset, [train_size, val_size])
 
-    indices = torch.randperm(len(val_dataset))[:int(len(val_dataset) * fraction)]
-    reduced_val_dataset = Subset(val_dataset, indices)
-    val_sampler = DistributedSampler(reduced_val_dataset)
-    val_loader = DataLoader(reduced_val_dataset, sampler=val_sampler, batch_size=8, num_workers=7)
+    train_sampler = DistributedSampler(train_dataset)
+    train_loader = DataLoader(train_dataset, sampler=train_sampler, batch_size=32, num_workers=7)
 
-    train_model(model, criterion, optimizer, scheduler, train_loader, val_loader)
+    val_sampler = DistributedSampler(val_dataset)
+    val_loader = DataLoader(val_dataset, sampler=val_sampler, batch_size=32, num_workers=7)
+
+    train_model(model, criterion, optimizer, train_loader, val_loader)
 
     dist.destroy_process_group()
 
