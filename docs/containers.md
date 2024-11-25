@@ -41,14 +41,81 @@ Python environment from an image can be accesed either interactively with spawni
  - most of base images on LUMI uses conda (Miniconda) environments that need to be activated with `$WITH_CONDA` alias command,
  - there is basic compiler toolchain included, note specific compiler commands (`gcc-XX` for scpefic versions installed).
 
+To inspect which specific packages are included in the images you can use this simple commands:
+
+```
+export SIF=/appl/local/containers/sif-images/lumi-pytorch-rocm-6.2.1-python-3.12-pytorch-20240918-vllm-4075b35.sif
+singularity exec $SIF bash -c '$WITH_CONDA && pip list'
+``` 
+
 ## Singularity and Slurm
 
 Most of the time container executeis on a compute node same way as regular program is. You need to prepend singularity command with `srun` launcher; plese note multiple srun tasks will spawn independent instances of the same container image. 
 
-## Installing additional packages in a container 
+This simple Slurm execution checks for available devices running Pytorch image on a GPU node.
 
+Using salloc command for instance:
+
+```
+salloc -p small-g --nodes=1 --gpus-per-node=2 --ntasks-per-node=1 --cpus-per-task=14 --time=3 \
+    --account=${PROJECT_ID}
+```
+
+which allocates 2 GPUs and 14 CPUs from a single compute node for a 3 minute job, one could execute simple Pytorch command from the container:
+
+```
+export SIF=/appl/local/containers/sif-images/lumi-pytorch-rocm-6.0.3-python-3.12-pytorch-v2.3.1.sif
+srun singularity exec $SIF \
+    bash -c '$WITH_CONDA ; \
+             python -c "import torch; print(torch.cuda.device_count())"'
+```
+
+using billing units from the LUMI project with `PROJECT_ID`.
+
+## Installing additional python packages in a container 
+
+One possible way of adding custom packages not included in the image is to use virtual environment on top of the conda environment. For example consider adding HDF5 python module `h5py` to the environment:
+
+```
+export SIF=/appl/local/containers/sif-images/lumi-mpi4py-rocm-6.2.0-python-3.12-mpi4py-3.1.6.sif
+singularity shell $SIF
+Singularity> $WITH_CONDA
+(mpi4py) Singularity> python -m venv h5-env --system-site-packages
+(mpi4py) Singularity> source ./h5-env/bin/activate
+(h5-env) (mpi4py) Singularity> pip install h5py
+```
+
+This will create `h5-env` environment in my local directory. The --system-site-packages flag gives the virtual environment access to the packages from the container. You may need to add additional sigularity bind mount to use other directories for the new virtual environment (scratch or project directory, for instance). Now one can execute script with additional imports requiring h5py module. To execute script called `my-script.py` within the container using the virtualenvironment use additional activation command:
+
+```
+singularity exec $SIF bash -c '$WITH_CONDA && ./h5-env/bin/activate && python my-script.py
+```
+
+This aprroach allows exploration of extended environment without rebuilding container from scratch every time a new package is added. The drawback is the virtual environment being disjoint from the container which makes is difficult to move. Moreover additinal overhead is associated with accessing files from the environment scattered on the filesystem.   
+   
 ### Using cotainr tool to extend existing image
+
+On LUMI you can use `cotainr` tool to easily build new container on top of an existing image by just including custom virtual environment. In order to build new image one can use commands:
+
+```
+module load CrayEnv cotainr
+export SIF=/appl/local/containers/sif-images/lumi-mpi4py-rocm-6.2.0-python-3.12-mpi4py-3.1.6.sif
+cotainr build h5-lumi-container.sif --base-image=$SIF --conda-env=h5-env.yml
+``` 
+
+This requires addtional yaml file describing additional modules - `h5py` as before:
+
+```
+name: h5-env
+dependencies:
+  - pip:
+    - h5py
+```
+
+Please note this process requires rebuilding entire images - it would require considerable amount of disk space and takes some time to complete.
 
 ## Custom images
 
-User can also bring own container image or convert image from registry (DockerHub for instance) to singularity format.
+Users can also bring their own container images or convert images from registry (DockerHub for instance) to singularity format.
+
+Custom images with MPI and/or ROCm dependencies are not supported. We stronly recomment to build custom containers on top of the LUMI base images. 
