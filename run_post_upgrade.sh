@@ -24,8 +24,6 @@ SQUASH=/scratch/project_462000002/joachimsode/file-format-ai-benchmark/imagenet-
 IMAGES=/Data/CLS-LOC/train/
 srun singularity exec -B $SQUASH:/train_images:image-src=$IMAGES $CONTAINER bash -c '$WITH_CONDA && source venv-extension/bin/activate && python scripts/squashfs/visualtransformer-squashfs.py'
 
-### No copy
-# srun singularity exec $CONTAINER bash -c '$WITH_CONDA && source venv-extension/bin/activate && python scripts/tar/visualtransformer-tar.py'
+### Tiny imagenet scripts
 # srun singularity exec $CONTAINER bash -c '$WITH_CONDA && source venv-extension/bin/activate && python scripts/hdf5/visualtransformer-hdf5.py'
-# srun singularity exec $CONTAINER bash -c '$WITH_CONDA && source venv-extension/bin/activate && python scripts/tfrecords/visualtransformer-tfrecords.py'
 # srun singularity exec -B data-formats/squashfs/train.squashfs:/train_images:image-src=/ $CONTAINER bash -c '$WITH_CONDA && source venv-extension/bin/activate && python scripts/squashfs/visualtransformer-squashfs.py'
