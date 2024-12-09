@@ -2,7 +2,7 @@ import torch
 import torchvision.transforms as transforms
 from torch.profiler import profile, record_function, ProfilerActivity
 from torchvision.models import vit_b_16
-from torch.utils.data import DataLoader
+from torch.utils.data import DataLoader, random_split
 import sys
 from hdf5_dataset import HDF5Dataset
 
@@ -66,22 +66,15 @@ def train_model(model, criterion, optimizer, train_loader, val_loader, epochs=10
 
 @time('visualtransformer-hdf5')
 def main():
-    folder = 'data-formats/hdf5/'
-    with HDF5Dataset(folder + 'train_images.hdf5', transform=transform) as train_dataset, \
-         HDF5Dataset(folder + 'val_images.hdf5', transform=transform) as val_dataset:
-
-        # train_loader = DataLoader(train_dataset, batch_size=32, shuffle=True, num_workers=4)
-        # val_loader = DataLoader(val_dataset, batch_size=32, shuffle=False, num_workers=4)
-
-        from torch.utils.data import Subset
-        fraction = 0.1
-        indices = torch.randperm(len(train_dataset))[:int(len(train_dataset) * fraction)]
-        reduced_train_dataset = Subset(train_dataset, indices)
-        train_loader = DataLoader(reduced_train_dataset, batch_size=32, shuffle=True, num_workers=7)
-
-        indices = torch.randperm(len(val_dataset))[:int(len(val_dataset) * fraction)]
-        reduced_val_dataset = Subset(val_dataset, indices)
-        val_loader = DataLoader(reduced_val_dataset, batch_size=32, shuffle=True, num_workers=7)
+    #folder = 'data-formats/hdf5/'
+    #with HDF5Dataset(folder + 'train_images.hdf5', transform=transform) as full_train_dataset
+    folder = 'data-formats/'
+    with HDF5Dataset(folder + 'images.hdf5', transform=transform) as full_train_dataset:
+        train_size = int(0.8 * len(full_train_dataset))
+        val_size = len(full_train_dataset) - train_size
+        train_dataset, val_dataset = random_split(full_train_dataset, [train_size, val_size])
+        train_loader = DataLoader(train_dataset, batch_size=32, shuffle=True, num_workers=7)
+        val_loader = DataLoader(val_dataset, batch_size=32, shuffle=True, num_workers=7)
 
         train_model(model, criterion, optimizer, train_loader, val_loader)
 
@@ -90,3 +83,7 @@ def main():
     
 if __name__ == '__main__':
     main()
+    # folder = 'data-formats/'
+    # with HDF5Dataset(folder + 'images.hdf5', transform=transform) as full_train_dataset:
+    #     for images, labels in full_train_dataset:
+    #         print(labels)
