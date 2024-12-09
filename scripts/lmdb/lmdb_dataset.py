@@ -14,8 +14,8 @@ class LMDBDataset(Dataset):
         
     def __enter__(self):
         self.file = lmdb.open(self.file_path, subdir=os.path.isdir(self.file_path),
-                             readonly=True, lock=False,
-                             readahead=False, meminit=False)
+                              readonly=True, lock=False, 
+                              readahead=False, meminit=False)
 
         with self.file.begin(write=False) as txn:
             self.length = pickle.loads(txn.get(b'__len__'))
@@ -33,10 +33,7 @@ class LMDBDataset(Dataset):
             byteflow = txn.get(self.keys[idx])
         byte_image, label = pickle.loads(byteflow)
         
-        buf = six.BytesIO()
-        buf.write(byte_image)
-        buf.seek(0)
-        image = Image.open(buf).convert('RGB')
+        image = Image.open(byte_image).convert('RGB')
         label = torch.tensor(label, dtype=torch.long)
 
         if self.transform:
