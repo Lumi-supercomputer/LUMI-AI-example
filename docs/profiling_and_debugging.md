@@ -37,3 +37,33 @@ sbatch run_ddp.sh
 ![Image title](assets/rocm-smi-8-gpu.png){ align=left }
 
 All eight devices are now listed in the output. Note, that the power consumption is only listed for half of the devices. This is due to the fact that one MI20x GPU consists of two graphical compute dies (GCD). In the context of `rocm-smi` and PyTorch in general, every GCD is listed as a separate GPU but the power budget is shared between two GCDs. When both GPUs are fully utilized, the power consumption will be around 500W.
+
+## PyTorch profiler
+
+Using `rocm-smi` can give us an easy way to peek at GPU utilization, but it doesn't provide any information about which parts of the code are taking the most time. For this, we can use PyTorch's built-in profiler. 
+We can enable the profiler by adding the following lines around the code we wish to profile:
+
+```python
+from torch.profiler import profile, ProfilerActivity
+
+prof = None
+if epoch == 2: # In this example we profile the second epoch
+    print("Starting profile...")
+    prof = profile(activities=[ProfilerActivity.CPU, ProfilerActivity.CUDA])
+    prof.start()
+
+# Code to profile
+
+if prof:
+    prof.stop()
+    prof.export_chrome_trace("trace.json")
+```
+Have a look at the `visualtransformer_profiled.py` script for a full example. The output of the profiling will be saved in a `trace.json` file. We can visualize the trace using the Chrome browser by navigating to `ui.perfetto.dev/` and loading the `trace.json` file. The trace will show us the time spent in each function call, and will look similar to the following:
+
+![Image title](assets/perfetto-trace.png){ align=left }
+
+Note, that chrome tabs are usually limited to around 2 GB of memory usage and that the trace files can become quite large and easily exceed this limit. It is therefore recommended to only profile a small part of the code that we are particularly interested in and not the full training loop.
+
+# TODO
+
+Mention `rocprof` and `omnitrace` for more advanced profiling and give list of resources for further reading.
