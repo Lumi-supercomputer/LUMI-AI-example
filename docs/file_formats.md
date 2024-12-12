@@ -55,7 +55,7 @@ The LMDB format has more possible performance optimization options available...
 ## Performance
 ### Synthetic Benchmark
 In the synthetic benchmark, we measure how quickly samples can be loaded into Python using the PyTorch `DataLoader` for the various different file formats. The looping time is measured for both the tiny and large imagenet a number of times. Here we report the measured average and standard deviation. 
-For the tiny imagenet, we loop through the entire dataset of 100.000 images a total of N=10 times for each format. Each job is executed in an independent job to ensure the RAM is emptied. The result is as follows;
+For the tiny imagenet, we loop through the entire dataset of 100.000 images. This is tested `N` times, where each job is executed in an independently to ensure a fresh node is used each time. The result is as follows;
 
 |          | mean (s) | std (s) |  N  |
 | :------: | :------: | :-----: | :-: |
@@ -67,7 +67,7 @@ We find that HDF5 and LMDB have roughly equal performance, where squashfs clearl
 `DataLoader(data, batch_size=32, shuffle=True, num_workers=7)`
 That is, the data is shuffled to be loaded in a random order, and is loaded in batches of 32 at a time. The number of workers is set equal to the number of CPUs requested in the allocation. Where on [LUMI one should maximally request 7 cores per GPU request](https://lumi-supercomputer.github.io/LUMI-training-materials/User-Updates/Update-202308/responsible-use/#core-and-memory-use-on-small-g-and-dev-g).
 
-For the large imagenet, we loop through 200.000 images out of the 1.2 million images a total of N=3 times for the compatible formats. Identical `DataLoader` parameters and job submission strategy is employed. 
+For the large imagenet, we loop through 200.000 images out of the 1.2 million images for the formats compatible with varying image size. The job is likewise executed independently `N` times and identical the `DataLoader` parameters is used.
 
 |          | mean (s) | std (s) |  N  |
 | :------: | :------: | :-----: | :-: |
