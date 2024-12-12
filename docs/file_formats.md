@@ -62,6 +62,7 @@ For the tiny imagenet, we loop through the entire dataset of 100.000 images a to
 | squashfs |  48.62   |  0.86   | 10  |
 |   HDF5   |  36.51   |  2.65   | 10  |
 |   LMDB   |  35.26   |  1.98   | 10  |
+
 We find that HDF5 and LMDB have roughly equal performance, where squashfs clearly performs about 33% slower. The parameters of the `DataLoader` are as follows:
 `DataLoader(data, batch_size=32, shuffle=True, num_workers=7)`
 That is, the data is shuffled to be loaded in a random order, and is loaded in batches of 32 at a time. The number of workers is set equal to the number of CPUs requested in the allocation. Where on [LUMI one should maximally request 7 cores per GPU request](https://lumi-supercomputer.github.io/LUMI-training-materials/User-Updates/Update-202308/responsible-use/#core-and-memory-use-on-small-g-and-dev-g).
@@ -72,4 +73,5 @@ For the large imagenet, we loop through 200.000 images out of the 1.2 million im
 | :------: | :------: | :-----: | :-: |
 | squashfs | 1982.16  |  50.47  |  3  |
 |   LMDB   | 1546.53  |  65.07  |  3  |
+
 where we see the speed-up of roughly 28% for LMDB compared to squashfs. 
