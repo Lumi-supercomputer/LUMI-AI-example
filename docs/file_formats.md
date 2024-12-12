@@ -67,6 +67,14 @@ We find that HDF5 and LMDB have roughly equal performance, where squashfs clearl
 `DataLoader(data, batch_size=32, shuffle=True, num_workers=7)`
 That is, the data is shuffled to be loaded in a random order, and is loaded in batches of 32 at a time. The number of workers is set equal to the number of CPUs requested in the allocation. Where on [LUMI one should maximally request 7 cores per GPU request](https://lumi-supercomputer.github.io/LUMI-training-materials/User-Updates/Update-202308/responsible-use/#core-and-memory-use-on-small-g-and-dev-g).
 
+We can run aa similar experience in a sequential job with one CPU core and `num_worker=1` we find that squashfs and LMDB scales as you would expect, however HDF5 does not run well sequentially.
+
+|          | mean (s) | std (s) |  N  |
+| :------: | :------: | :-----: | :-: |
+| squashfs |  247.25  |  1.53   |  5  |
+|   HDF5   |  1884.7  |  0.46   |  5  |
+|   LMDB   |  209.95  |  15.99  |  5  |
+
 For the large imagenet, we loop through 200.000 images out of the 1.2 million images for the formats compatible with varying image size. The job is likewise executed independently `N` times and identical the `DataLoader` parameters is used.
 
 |          | mean (s) | std (s) |  N  |
