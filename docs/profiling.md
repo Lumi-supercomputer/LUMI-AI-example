@@ -64,7 +64,7 @@ Have a look at the `visualtransformer_profiled.py` script for a full example. Th
 
 Note, that chrome tabs are usually limited to around 2 GB of memory usage and that the trace files can become quite large and easily exceed this limit. It is therefore recommended to only profile a small part of the code that we are particularly interested in and not the full training loop.
 
-# AMD profilers
+## AMD profilers
 
 If the framework-level profiling is not sufficient and you want to investigate hardware-level performance, you can use AMD's profiling tools. The [LUMI training materials](https://lumi-supercomputer.github.io/LUMI-training-materials/) provide multiple lectures on how to use AMD's profilers `rocprof`, `Omnitrace` and `Omniperf`. For a short introduction to `rocprof`, have a look at the lecture ["Understanding GPU activity & checking jobs"](https://lumi-supercomputer.github.io/LUMI-training-materials/ai-20241126/extra_04_CheckingGPU/) from the last AI workshop. If you need a detailed introduction to all AMD profilers provided on LUMI, we recommend the lecture material of the last [Performance Analysis and Optimization Workshop](https://lumi-supercomputer.github.io/LUMI-training-materials/paow-20240611/).
 
