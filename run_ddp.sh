@@ -1,13 +1,11 @@
 #!/bin/bash
 #SBATCH --account=project_462000002
-#SBATCH --partition=small-g
+#SBATCH --partition=standard-g
 #SBATCH --gpus-per-node=8
 #SBATCH --ntasks=1
 #SBATCH --cpus-per-task=56
 #SBATCH --mem=480G
 #SBATCH --time=1:00:00
-
-export OMP_NUM_THREADS=7
 
 # shortcut for getting the binds right
 module use /appl/local/training/modules/AI-20240529

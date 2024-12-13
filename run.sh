@@ -9,6 +9,7 @@
 #SBATCH --mem=60G
 #SBATCH --time=24:00:00
 
+
 # shortcut for getting the binds right
 module use /appl/local/training/modules/AI-20240529
 module load singularity-userfilesystems singularity-CPEbits
@@ -27,3 +28,4 @@ srun singularity exec -B $SQUASH:/train_images:image-src=$IMAGES $CONTAINER bash
 ### Tiny imagenet scripts
 # srun singularity exec $CONTAINER bash -c '$WITH_CONDA && source venv-extension/bin/activate && python scripts/hdf5/visualtransformer-hdf5.py'
 # srun singularity exec -B data-formats/squashfs/train.squashfs:/train_images:image-src=/ $CONTAINER bash -c '$WITH_CONDA && source venv-extension/bin/activate && python scripts/squashfs/visualtransformer-squashfs.py'
+
