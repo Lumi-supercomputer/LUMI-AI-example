@@ -1,10 +1,9 @@
 # Data Storage Options
 
 ## Executive Summary
-For most distributed parallel I/O-bound tasks you want to use on LUMI the stripting feature of the parallel FS Lustre.
-LUMI-P has 32 OSTs.
-LUMI-F has 58 OSTs.
-Overstriping may be useful when accessing
+For most distributed parallel I/O-bound tasks you want to use on LUMI the stripting feature of the parallel Lustre FS.
+
+Keep in mind that  LUMI-P has 32 OSTs and LUMI-F has 58 OSTs.
 
 ## Intro
 
