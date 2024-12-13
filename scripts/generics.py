@@ -80,14 +80,17 @@ class ZipFolder(DatasetFolder):
             def is_valid_file(x: str) -> bool:
                 if len(Path(x).parts) > 3:
                     # Assume Path.parts = ('ILSVRC', 'Data', 'CLS-LOC', 'train', 'n02493793', 'n02493793_2317.JPEG')
-                    train_data = Path(x).parts[1] == 'Data' and Path(x).parts[3] == 'train'
+                    # train_data = Path(x).parts[1] == 'Data' and Path(x).parts[3] == 'train'
+                    # Assume Path.parts = ('tiny-imagenet-200', 'train', 'n03584254', 'images', 'n03584254_229.JPEG')
+                    train_data = Path(x).parts[1] == 'train'
                 else:
                     train_data = False
                 return has_file_allowed_extension(x, cast(tuple[str, ...], extensions)) and train_data
         is_valid_file = cast(Callable[[str], bool], is_valid_file)
         for filepath in self.root_data.namelist():
             if is_valid_file(filepath):
-                target_class = Path(filepath).parts[4]
+                # target_class = Path(filepath).parts[4]
+                target_class = Path(filepath).parts[2]
                 instances.append((filepath, class_to_idx[target_class]))
         return instances
 

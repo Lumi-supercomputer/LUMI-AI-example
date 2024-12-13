@@ -76,8 +76,8 @@ def folder2lmdb(image_folder, output_file, write_frequency=1000):
     
 @time('convert_to_lmdb')
 def main():
-    #folder_in = 'data-formats/raw/tiny-imagenet-200/'
-    #folder_out = 'data-formats/lmdb/'
+    # folder_in = 'data-formats/raw/tiny-imagenet-200.zip'
+    # folder_out = 'data-formats/lmdb/train_images.lmdb'
     folder_in = '/project/project_462000002/LUMI-AI-example/imagenet-object-localization-challenge.zip'
     folder_out = '/scratch/project_462000002/joachimsode/file-format-ai-benchmark/imagenet-object-localization-challenge.lmdb'
     parser = argparse.ArgumentParser()
