@@ -16,7 +16,7 @@ The main available filesystems on LUMI which have high priority for computations
 
 To account for varying system loads, the below speeds show the averages of multiple benchmark runs. They were all performed after the LUMI system upgrade of summer 2024.
 
-If you want to validate these numbers, you can run the tests yourself, by downloading the SLURM batch script [here](./LUMI-lustre-fs-benchmarks-set.sh). You will need 100GB of available quota in your /scratch/project_X/ and 100GB in /flash/project_X/.
+If you want to validate these numbers, you can run the tests yourself, by downloading the SLURM batch script [here](./LUMI-lustre-fs-benchmarks-set.sh). You will need 128GB of available quota in your /scratch/project_X/ and 128GB in /flash/project_X/.
 
 ## Striping
 To maximize throughput, you want to ensure that you access different OSTs. If your data is to be striped evenly among OSTs, you only need to specify the number of stripes you want to use (unless you intend to overstripe, this is equal to the number of OSTs for a given file.)
