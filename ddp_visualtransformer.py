@@ -30,13 +30,14 @@ def set_cpu_affinity(local_rank):
     print(f"Rank {rank} (local {local_rank}) binding to cpus: {cpu_list}")
     psutil.Process().cpu_affinity(cpu_list)
 
-
 dist.init_process_group(backend='nccl')
 
 local_rank = int(os.environ['LOCAL_RANK'])
 torch.cuda.set_device(local_rank)
 rank = int(os.environ["RANK"])
 set_cpu_affinity(local_rank)
+
+print(f"Rank {rank} (local {local_rank}) binding to cpus: {psutil.Process().cpu_affinity()}")
 
 # Define transformations
 transform = transforms.Compose([
@@ -91,7 +92,7 @@ def train_model(model, criterion, optimizer, train_loader, val_loader, epochs=10
             print(f'Accuracy: {100 * correct / total}%')
 
 
-with HDF5Dataset('train_images.hdf5', transform=transform) as full_train_dataset:
+with HDF5Dataset('/project/project_462000002/LUMI-AI-example/train_images.hdf5', transform=transform) as full_train_dataset:
 
     # Splitting the dataset into train and validation sets
     train_size = int(0.8 * len(full_train_dataset))
