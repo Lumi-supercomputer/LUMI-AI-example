@@ -44,7 +44,7 @@ def train_model(model, criterion, optimizer, train_loader, val_loader, epochs=10
         print(f'Accuracy: {100 * correct / total}%')
 
 
-with HDF5Dataset('train_images.hdf5', transform=transform) as full_train_dataset:
+with HDF5Dataset('/project/project_462000002/LUMI-AI-example/train_images.hdf5', transform=transform) as full_train_dataset:
     # Splitting the dataset into train and validation sets
     train_size = int(0.8 * len(full_train_dataset))
     val_size = len(full_train_dataset) - train_size
