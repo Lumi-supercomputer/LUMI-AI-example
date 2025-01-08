@@ -11,20 +11,20 @@ The script in ddp_visualtransformer.py implements PyTorch DDP on the visualtrans
 
 Initialize the distributed environment:
 
-```
+```python
 import torch.distributed as dist
 
 dist.init_process_group(backend='nccl')
 ```
 
 Read the local rank from the LOCAL_RANK environment variable.
-```
+```python
 local_rank = int(os.environ['LOCAL_RANK'])
 torch.cuda.set_device(local_rank)
 ```
 
 Wrap the model:
-```
+```python
 from torch.nn.parallel import DistributedDataParallel
 
 model = DistributedDataParallel(model, device_ids=[local_rank])
@@ -32,10 +32,8 @@ model = DistributedDataParallel(model, device_ids=[local_rank])
 
 Change the dataloader to use the distributed sampler:
 
-```
+```python
 from torch.utils.data.distributed import DistributedSampler
-
-...
 
 train_sampler = DistributedSampler(train_dataset)
 train_loader = DataLoader(train_dataset, sampler=train_sampler, batch_size=32, num_workers=7)
@@ -45,9 +43,10 @@ train_loader = DataLoader(train_dataset, sampler=train_sampler, batch_size=32, n
 The distributed training job can be launched in multiple ways. We cover two methods: torchrun and srun.
 
 #### torchrun
+##### Single-node, multi-GPU
 The jobscript to run the PyTorch DDP example on a single LUMI-G node with all 4 GPUs (8 GCDs) is run_ddp_torchrun.sh. We reserve the full node and launch a single task, with 56 cpus per task:
 
-```
+```bash
 #SBATCH --nodes=1
 #SBATCH --gpus-per-node=8
 #SBATCH --ntasks=1
@@ -57,33 +56,35 @@ The jobscript to run the PyTorch DDP example on a single LUMI-G node with all 4 
 
 We use the torchrun launcher (note that `torchrun` and `python -m torch.distributed.run` are equivalent), which will launch 8 processes on the node:
 
-```
+```bash
 srun singularity exec $SIF bash -c '$WITH_CONDA && source myenv_post_upgrade/bin/activate && python -m torch.distributed.run --standalone --nnodes=1 --nproc_per_node=8 ddp_visualtransformer.py'
 ```
 
+##### Multi-node
 The jobscript to run the PyTorch DDP example on 4 full LUMI-G nodes is run_ddp_torchrun_4.sh.
 To run on multiple nodes, we adjust the job requirements:
 
-```
+```bash
 #SBATCH --nodes=4
 #SBATCH --tasks-per-node=1
 ```
 We set the environment variables that will be used for the distributed initialization:
 
-```
+```bash
 export MASTER_ADDR=$(scontrol show hostnames $SLURM_JOB_NODELIST | head -n 1)
 export MASTER_PORT=29500
 ```
 
 And run with torchrun, passing the --rdzv_* parameters to the launcher:
-```
+```bash
 srun singularity exec $CONTAINER bash -c '$WITH_CONDA && source myenv_post_upgrade/bin/activate && python -m torch.distributed.run --nnodes=$SLURM_JOB_NUM_NODES --nproc_per_node=8 --rdzv_id=\$SLURM_JOB_ID --rdzv_backend=c10d --rdzv_endpoint="$MASTER_ADDR:$MASTER_PORT" ddp_visualtransformer.py'
 ```
 
 #### srun
+##### Single-node, multi-GPU
 The jobscript to run the PyTorch DDP example on a single LUMI-G node with all 4 GPUs (8 GCDs) is run_ddp_srun.sh. Since we launch all processes through srun, we now set ntasks-per-node to 8, and cpus-per-task to 7. We again reserve the full node:
 
-```
+```bash
 #SBATCH --nodes=1
 #SBATCH --gpus-per-node=8
 #SBATCH --ntasks-per-node=8
@@ -93,7 +94,7 @@ The jobscript to run the PyTorch DDP example on a single LUMI-G node with all 4 
 
 Torch Distributed uses a number of environment variables to initialize the distributed environment. We set these variables:
 
-```
+```bash
 export MASTER_ADDR=$(scontrol show hostnames $SLURM_JOB_NODELIST | head -n 1)
 export MASTER_PORT=29500
 export WORLD_SIZE=$SLURM_NPROCS
@@ -101,17 +102,18 @@ export WORLD_SIZE=$SLURM_NPROCS
 ```
 
 Then we run as follows:
-```
+```bash
 srun singularity exec $CONTAINER bash -c "export RANK=\$SLURM_PROCID && export LOCAL_RANK=\$SLURM_LOCALID \
                                                                                 $WITH_CONDA && source myenv_post_upgrade/bin/activate && \
                                                                                 python ddp_visualtransformer.py"
 ```
 Note that the export RANK and LOCAL_RANK environement variables are exported inside the container and cannot be exported in the slurm script, as they are only available inside the slurm jobstep (after srun has launched the process).
 
+##### Multi-node
 The jobscript to run the PyTorch DDP example on 4 full LUMI-G nodes is run_ddp_srun_4.sh.
 To run on multiple nodes, we only need to adjust the job requirements:
 
-```
+```bash
 #SBATCH --nodes=4
 ```
 
@@ -128,34 +130,29 @@ The script in ds_visualtransformer.py implements DeepSpeed on the visualtransfor
 
 Parse command-line parameters:
 
-```
+```python
 import argparse
 
 parser = argparse.ArgumentParser()
-
-parser.add_argument('--local-rank', type=int, default=-1,
-                    help='local rank passed from distributed launcher')
-
 parser = deepspeed.add_config_arguments(parser)
-
 args = parser.parse_args()
 ```
 
 Initialize the distributed environment:
-```
+```python
 import deepspeed
 
 deepspeed.init_distributed()
 ```
 
 Initialize the DeepSpeed engine:
-```
+```python
 model_engine, optimizer, _, _ = deepspeed.initialize(
     args=args, model=model, model_parameters=model.parameters())
 ```
 
 Modify the training loop (and similar for the validation loop):
-```
+```python
 for images, labels in train_loader:
 	images, labels = images.to(model_engine.local_rank), labels.to(model_engine.local_rank)
 	optimizer.zero_grad()
@@ -171,10 +168,8 @@ for images, labels in train_loader:
 
 Change the dataloader to use the distributed sampler:
 
-```
+```python
 from torch.utils.data.distributed import DistributedSampler
-
-...
 
 train_sampler = DistributedSampler(train_dataset)
 train_loader = DataLoader(train_dataset, sampler=train_sampler, batch_size=32, num_workers=7)
@@ -186,7 +181,7 @@ The file ds_config.json contains the DeepSpeed configuration parameters. Some im
 - fp16 / bf16: use of half precision
 
 
-```
+```json
 {
   "zero_optimization": {
     "stage": 1
@@ -203,9 +198,10 @@ The file ds_config.json contains the DeepSpeed configuration parameters. Some im
 In this example, we use the torchrun launcher to launch the deepspeed example. It is also possible to launch the job using srun, in similar fashion as for the PyTorch DDP example.
 
 #### torchrun
+##### Single-node, multi-GPU
 The jobscript to run the DeepSpeed example on a single LUMI-G node with all 4 GPUs (8 GCDs) is run_ds_torchrun.sh. We reserve the full node and launch a single task, with 56 cpus per task:
 
-```
+```bash
 #SBATCH --nodes=1
 #SBATCH --gpus-per-node=8
 #SBATCH --ntasks=1
@@ -214,26 +210,27 @@ The jobscript to run the DeepSpeed example on a single LUMI-G node with all 4 GP
 
 DeepSpeed uses a number of environment variables to initialize the distributed environment. We set these variables:
 
-```
+```bash
 export MASTER_ADDR=$(scontrol show hostnames $SLURM_JOB_NODELIST | head -n 1)
 export MASTER_PORT=29500
 ```
 
 We use the torchrun launcher (note that `torchrun` and `python -m torch.distributed.run` are equivalent), which will launch 8 processes on the node:
-```
+```bash
 srun singularity exec $CONTAINER bash -c 'export CXX=g++-12; $WITH_CONDA && source myenv_post_upgrade/bin/activate && torchrun --nproc_per_node 8 --nnodes $SLURM_NNODES --node_rank $SLURM_PROCID --master_addr $MASTER_ADDR --master_port $MASTER_PORT ds_visualtransformer.py --deepspeed --deepspeed_config ds_config.json'
 ```
 
+##### Multi-node
 The jobscript to run the DeepSpeed example on 4 full LUMI-G nodes is run_ds_torchrun_4.sh.
 To run on multiple nodes, we adjust the job requirements:
 
-```
+```bash
 #SBATCH --nodes=4
 #SBATCH --tasks-per-node=1
 ```
 
 And pass the --rdzv_* parameters to the launcher:
-```
+```bash
 srun singularity exec $CONTAINER bash -c 'export CXX=g++-12; $WITH_CONDA && source myenv_post_upgrade/bin/activate && time torchrun --nnodes=$SLURM_JOB_NUM_NODES --nproc_per_node=8 --node_rank $SLURM_PROCID --rdzv_id=\$SLURM_JOB_ID --rdzv_backend=c10d --rdzv_endpoint="$MASTER_ADDR:$MASTER_PORT" ds_visualtransformer.py --deepspeed --deepspeed_config ds_config.json'
 ```
 
@@ -244,7 +241,7 @@ For optimal performance on a LUMI-G node, it is important to set the correct bin
 #### torchrun
 When torchrun is used, there is no way to pass binding information to the launcher, so the GPU binding has to be set in the python script itself, as follows:
 
-```
+```python
 def set_cpu_affinity(local_rank):
     LUMI_GPU_CPU_map = {
         # A mapping from GCD to the closest CPU cores in a LUMI-G node
@@ -277,7 +274,7 @@ Note that this binding is specific to LUMI-G nodes and may not be optimal (or wo
 #### srun
 When srun is used, slurm binding options can be used in the job script:
 
-```
+```bash
 # LUMI-G specific bindings
 CPU_BIND_MASKS="0x00fe000000000000,0xfe00000000000000,0x0000000000fe0000,0x00000000fe000000,0x00000000000000fe,0x000000000000fe00,0x000000fe00000000,0x0000fe0000000000"
 
@@ -287,7 +284,7 @@ srun --cpu-bind=mask_cpu=$CPU_BIND_MASKS singularity exec $CONTAINER bash -c "ex
 ```
 
 To output the binding information, --cpu-bind=v can be passed to srun:
-```
+```bash
 srun --cpu-bind=mask_cpu=$CPU_BIND_MASKS singularity exec ...
 ```
 
@@ -297,7 +294,7 @@ Since the bindings are not set in the python script but in the job submissions s
 ### RCCL environment variables
 In all job scripts, these environment variables should be set to make sure that RCCL uses the correct interfaces:
 
-```
+```bash
 # To have RCCL use the Slingshot interfaces:
 export NCCL_SOCKET_IFNAME=hsn0,hsn1,hsn2,hsn3
 
