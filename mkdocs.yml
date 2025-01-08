@@ -11,8 +11,10 @@ nav:
       - File formats: file_formats.md
       - Multi-GPU and Multi-node: multi_gpu_and_node.md
       - Profiling and debugging: profiling_and_debugging.md
-      - TensorBoard visualization: visualization.md
-    
+      - Visualization:
+          - TensorBoard: tensorboard_visualization.md
+          - MLflow: mlflow_visualization.md 
+
  
 theme:
   name: material
