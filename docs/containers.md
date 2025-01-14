@@ -83,6 +83,12 @@ This aprroach allows exploration of extended environment without rebuilding cont
 
 ## Custom images
 
-Users can also bring their own container images or convert images from registry (DockerHub for instance) to singularity format.
+Users can also bring their own container images or convert images from other registries (DockerHub for instance) to the singularity format.
 
-Custom images with MPI and/or ROCm dependencies are not supported. We stronly recomment to build custom containers on top of the LUMI base images. 
+Custom images with MPI and/or ROCm dependencies are not supported. We stronly recommend to build custom containers on top of the provided LUMI base images. 
+
+## Putting it all together
+
+For the given [visualtransformer.py](../visualtransformer.py) python script, we can take the container `/appl/local/containers/sif-images/lumi-pytorch-rocm-6.2.1-python-3.12-pytorch-20240918-vllm-4075b35.sif` and extend it with a virtual environment in which we install the `h5py` package. The slrum script to run run this code on a single GPU on LUMI is provided in [run.sh](../run.sh).
+
+
