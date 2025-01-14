@@ -20,33 +20,15 @@ The are two different ways how containers that are provided by the LUMI User Sup
 
 In this example we will use the second option as this approach is used in the [LUMI AI workshop material](https://github.com/Lumi-supercomputer/Getting_Started_with_AI_workshop).
 
-Base images are available as flat sif files stored on the shared filesystem (image registry is not provided).
-
-Naming of the sif files follows the convention: 
-
-```
-lumi-package_name-rocm-rocm_version-python-python_version-package_name-package_version-dockerhash-docker_hash.sif
-``` 
-
-with available combinations from the following table:
-
-| Package name | ROCm version | Python version | Package version | Docker hash | 
-| --- | --- | --- | --- | --- | 
-|  `mpi4py` | `6.2.0` | `3.12` | `3.1.6` | `f049c8bd4669` |
-| --- | --- | --- | --- | --- | 
-| `pytorch` | `5.7.3` | `3.12` | `v2.2.2` | `b0bb3b4ea779` |
-| `pytorch` | `6.2.0` | `3.10` | `v2.3.0` | `187f41102477` |
-| `pytorch` | `6.0.3` | `3.12` | `v2.3.1` | `2c1c14cafd28` |
-| `pytorch` | `6.1.3` | `3.12` | `v2.4.1` | `04f2083a6cb0` |
-| `pytorch` | `6.2.1` | `3.12` | `20240918-vllm-4075b35` | `3cad1babc4b8` |
+The latest versions of the provided containers can be found at `/appl/local/containers/sif-images`. This folder includes base condainers, following the naming convention `lumi-rocm-rocm-version-number.sif` (we will get to them at a later in this chapter) and containers that already include a ML framework and some commonly used packages. The names of the `.sif` files indicate which ML framework is installed and which versions are used for `ROCm`, `Python` and the framework. 
 
 
 ## Interacting with a containerized environment
 
-Python environment from an image can be accesed either interactively with spawning a shell instance within a container (`sinularity shell` command) or by executing command within a container (`singularity exec` command). Do not expert actual runscript, you need to execute your own script. There are also common assuptions used:
+Python environment from an image can be accesed either interactively with spawning a shell instance within a container (`sinularity shell` command) or by executing commands within a container (`singularity exec` command). Do not expert actual runscript, you need to execute your own script inside the container. There are also common assuptions used:
 
- - most of base images on LUMI uses conda (Miniconda) environments that need to be activated with `$WITH_CONDA` alias command,
- - there is basic compiler toolchain included, note specific compiler commands (`gcc-XX` for scpefic versions installed).
+ - most of base images on LUMI use conda (Miniconda) environments that need to be activated with `$WITH_CONDA` alias command,
+ - there is basic a compiler toolchain included, note specific compiler commands (`gcc-XX` for scpefic versions installed).
 
 To inspect which specific packages are included in the images you can use this simple commands:
 
@@ -57,18 +39,18 @@ singularity exec $SIF bash -c '$WITH_CONDA && pip list'
 
 ## Singularity and Slurm
 
-Most of the time container executeis on a compute node same way as regular program is. You need to prepend singularity command with `srun` launcher; plese note multiple srun tasks will spawn independent instances of the same container image. 
+In order to run a program inside a container on a GPU node, you need to prepend the singularity command with the `srun` launcher. Plese note that multiple srun tasks will spawn independent instances of the same container image. 
 
-This simple Slurm execution checks for available devices running Pytorch image on a GPU node.
+We can check whether the selected PyTorch image detects the allocated GPUs with the following commands. 
 
-Using salloc command for instance:
+The command
 
 ```
 salloc -p small-g --nodes=1 --gpus-per-node=2 --ntasks-per-node=1 --cpus-per-task=14 --time=3 \
     --account=${PROJECT_ID}
 ```
 
-which allocates 2 GPUs and 14 CPUs from a single compute node for a 3 minute job, one could execute simple Pytorch command from the container:
+allocates 2 GPUs and 14 CPUs from a single compute node for a 3 minute job. We can then print out the number of detected GPUs via the following command:
 
 ```
 export SIF=/appl/local/containers/sif-images/lumi-pytorch-rocm-6.0.3-python-3.12-pytorch-v2.3.1.sif
@@ -76,50 +58,28 @@ srun singularity exec $SIF \
     bash -c '$WITH_CONDA ; \
              python -c "import torch; print(torch.cuda.device_count())"'
 ```
-
-using billing units from the LUMI project with `PROJECT_ID`.
+For more information on SLURM on LUMI, please visit the [SLURM quistart page in our documentation](https://docs.lumi-supercomputer.eu/runjobs/scheduled-jobs/slurm-quickstart/).
 
 ## Installing additional python packages in a container 
 
-One possible way of adding custom packages not included in the image is to use virtual environment on top of the conda environment. For example consider adding HDF5 python module `h5py` to the environment:
+You might find yourself in the situation where none of the provided containers contain all Python packages you need. One possible way of adding custom packages not included in the image is to use virtual environment on top of the conda environment. For this example we need to add the HDF5 python package `h5py` to the environment:
 
 ```
-export SIF=/appl/local/containers/sif-images/lumi-mpi4py-rocm-6.2.0-python-3.12-mpi4py-3.1.6.sif
+export SIF=/appl/local/containers/sif-images/lumi-pytorch-rocm-6.2.1-python-3.12-pytorch-20240918-vllm-4075b35.sif
 singularity shell $SIF
 Singularity> $WITH_CONDA
 (mpi4py) Singularity> python -m venv h5-env --system-site-packages
-(mpi4py) Singularity> source ./h5-env/bin/activate
+(mpi4py) Singularity> source h5-env/bin/activate
 (h5-env) (mpi4py) Singularity> pip install h5py
 ```
 
-This will create `h5-env` environment in my local directory. The --system-site-packages flag gives the virtual environment access to the packages from the container. You may need to add additional sigularity bind mount to use other directories for the new virtual environment (scratch or project directory, for instance). Now one can execute script with additional imports requiring h5py module. To execute script called `my-script.py` within the container using the virtualenvironment use additional activation command:
+This will create an `h5-env` environment in the wroking directory. The --system-site-packages flag gives the virtual environment access to the packages from the container. Now one can execute script with and import the `h5py` package. To execute script called `my-script.py` within the container using the virtualenvironment use the additional activation command:
 
 ```
-singularity exec $SIF bash -c '$WITH_CONDA && ./h5-env/bin/activate && python my-script.py
+singularity exec $SIF bash -c '$WITH_CONDA && h5-env/bin/activate && python my-script.py
 ```
 
-This aprroach allows exploration of extended environment without rebuilding container from scratch every time a new package is added. The drawback is the virtual environment being disjoint from the container which makes is difficult to move. Moreover additinal overhead is associated with accessing files from the environment scattered on the filesystem.   
-   
-### Using cotainr tool to extend existing image
-
-On LUMI you can use `cotainr` tool to easily build new container on top of an existing image by just including custom virtual environment. In order to build new image one can use commands:
-
-```
-module load CrayEnv cotainr
-export SIF=/appl/local/containers/sif-images/lumi-mpi4py-rocm-6.2.0-python-3.12-mpi4py-3.1.6.sif
-cotainr build h5-lumi-container.sif --base-image=$SIF --conda-env=h5-env.yml
-``` 
-
-This requires addtional yaml file describing additional modules - `h5py` as before:
-
-```
-name: h5-env
-dependencies:
-  - pip:
-    - h5py
-```
-
-Please note this process requires rebuilding entire images - it would require considerable amount of disk space and takes some time to complete.
+This aprroach allows exploration of extended environment without rebuilding container from scratch every time a new package is added. The drawback is that the virtual environment is disjoint from the container which makes is difficult to move as the path to the virtual environment needs to be updated acordingly. Moreover, installing python packages creates typically thousands of small files. This puts a lot of strain on the Lustre file system and might exceed your file quota. This problem can be solved by createing a new container using the [cotainr tool](https://lumi-supercomputer.github.io/LUMI-training-materials/ai-20241126/extra_06_BuildingContainers/) or turn the virtual environment directory into a [SquashFS file](https://github.com/Lumi-supercomputer/Getting_Started_with_AI_workshop/blob/main/07_Extending_containers_with_virtual_environments_for_faster_testing/examples/extending_containers_with_venv.md).
 
 ## Custom images
 
