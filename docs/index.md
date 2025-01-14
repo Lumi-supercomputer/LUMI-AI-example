@@ -1,8 +1,10 @@
 # LUMI Machine learning guide
 
-This guide is designed to assist users in migrating their machine learning applications from smaller-scale computing environments or various cloud computing providers to LUMI. We will walk you through a detailed example of training an image classification model using [PyTorch's Vision Transformer (VIT)](https://pytorch.org/vision/main/models/vision_transformer.html) on the [ImageNet dataset](https://www.image-net.org/).
+This guide is designed to assist users in migrating their machine learning applications from smaller-scale computing environments to LUMI. We will walk you through a detailed example of training an image classification model using [PyTorch's Vision Transformer (VIT)](https://pytorch.org/vision/main/models/vision_transformer.html) on the [ImageNet dataset](https://www.image-net.org/).
 
-All Python and bash scripts referenced in this guide are accessible in this [GitHub repository](https://github.com/Lumi-supercomputer/LUMI-AI-example/tree/main).
+All Python and bash scripts referenced in this guide are accessible in this [GitHub repository](https://github.com/Lumi-supercomputer/LUMI-AI-example/tree/main). We start with a basic python script, [visualtransformer.py](../visualtransformer.py), that could run on your local machine and modify it over the next chapters to run it efficiently on LUMI.
+
+Even though this guide uses PyTorch, most of the covered topics are independent of the used machine learning framework. We therefore believe this guide is helpful for all new ML users on LUMI while also providing a concrete example that runs on LUMI.
 
 ### Requirements
 
@@ -15,12 +17,13 @@ Before proceeding, please ensure you meet the following prerequisites:
 
 The guide is structured into the following sections:
 
-- [Installing Python packages in a container](containers.md)
+- [Setting up the environment](containers.md)
 - [Storage options for training data](data_storage.md)
 - [File formats for training data](file_formats.md) 
 - [Scaling training to multiple GPUs and multiple nodes](multi_gpu_and_node.md)
-- [Profiling and debugging machine learning applications](profiling_and_debugging.md)
-- [TensorBoard visualization](visualization.md)
+- [Profiling machine learning applications](profiling.md)
+- [TensorBoard visualization](tensorboard_visualization.md)
+- [MLflow visualization](mlflow_visualization.md)
 
 
 ### Further reading
