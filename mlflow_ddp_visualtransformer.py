@@ -1,7 +1,5 @@
 import torch
 import os
-import time
-import psutil
 import torchvision.transforms as transforms
 from torchvision.models import vit_b_16
 from torch.utils.data import DataLoader, random_split
@@ -9,6 +7,8 @@ from torch.nn.parallel import DistributedDataParallel
 from hdf5_dataset import HDF5Dataset
 import torch.distributed as dist
 from torch.utils.data.distributed import DistributedSampler
+import psutil
+import mlflow
 
 # The performance of the CPU mapping needs to be tested
 def set_cpu_affinity(local_rank):
@@ -30,11 +30,19 @@ def set_cpu_affinity(local_rank):
     print(f"Rank {rank} (local {local_rank}) binding to cpus: {cpu_list}")
     psutil.Process().cpu_affinity(cpu_list)
 
+
 dist.init_process_group(backend='nccl')
 
 local_rank = int(os.environ['LOCAL_RANK'])
 torch.cuda.set_device(local_rank)
 rank = int(os.environ["RANK"])
+
+if rank == 0:
+#    mlflow.set_tracking_uri(os.environ['PWD'] + "/mlflow")
+    mlflow.set_tracking_uri("sqlite:///" +os.environ['PWD'] + "/mlruns.db")
+
+    mlflow.start_run(run_name="visual")
+
 set_cpu_affinity(local_rank)
 
 # Define transformations
@@ -57,9 +65,6 @@ def train_model(model, criterion, optimizer, train_loader, val_loader, epochs=10
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
     model.to(device)
 
-    if rank == 0:
-        start = time.time()
-
     for epoch in range(epochs):
         model.train()
         running_loss = 0.0
@@ -76,8 +81,9 @@ def train_model(model, criterion, optimizer, train_loader, val_loader, epochs=10
 
         if rank == 0:
             print(f'Epoch {epoch+1}, Loss: {running_loss/len(train_loader)}')
+            mlflow.log_metric("loss", running_loss/len(train_loader), step = epoch)
 
-        # Validation step, note that only results from rank 0 are used here.
+        # Validation step
         model.eval()
         correct = 0
         total = 0
@@ -91,9 +97,8 @@ def train_model(model, criterion, optimizer, train_loader, val_loader, epochs=10
 
         if rank == 0:
             print(f'Accuracy: {100 * correct / total}%')
+            mlflow.log_metric("accuracy", correct / total, step = epoch)
 
-    if rank == 0:
-        print(f"Time elapsed (s): {time.time()-start}")
 
 
 with HDF5Dataset('/project/project_462000002/LUMI-AI-example/train_images.hdf5', transform=transform) as full_train_dataset:

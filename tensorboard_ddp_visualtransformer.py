@@ -1,7 +1,5 @@
 import torch
 import os
-import time
-import psutil
 import torchvision.transforms as transforms
 from torchvision.models import vit_b_16
 from torch.utils.data import DataLoader, random_split
@@ -9,6 +7,24 @@ from torch.nn.parallel import DistributedDataParallel
 from hdf5_dataset import HDF5Dataset
 import torch.distributed as dist
 from torch.utils.data.distributed import DistributedSampler
+import psutil
+
+from torch.utils.tensorboard import SummaryWriter
+import matplotlib.pyplot as plt
+
+# helper function to show an image
+# (used in the `plot_classes_preds` function below)
+def matplotlib_imshow(img, one_channel=False):
+    if one_channel:
+        img = img.mean(dim=0)
+    img = img / 2 + 0.5     # unnormalize
+    npimg = img.numpy()
+    if one_channel:
+        plt.imshow(npimg, cmap="Greys")
+    else:
+        plt.imshow(np.transpose(npimg, (1, 2, 0)))
+
+
 
 # The performance of the CPU mapping needs to be tested
 def set_cpu_affinity(local_rank):
@@ -30,12 +46,16 @@ def set_cpu_affinity(local_rank):
     print(f"Rank {rank} (local {local_rank}) binding to cpus: {cpu_list}")
     psutil.Process().cpu_affinity(cpu_list)
 
+
 dist.init_process_group(backend='nccl')
 
 local_rank = int(os.environ['LOCAL_RANK'])
 torch.cuda.set_device(local_rank)
 rank = int(os.environ["RANK"])
 set_cpu_affinity(local_rank)
+
+if rank == 0:
+    writer = SummaryWriter('runs')
 
 # Define transformations
 transform = transforms.Compose([
@@ -56,9 +76,16 @@ optimizer = torch.optim.Adam(model.parameters(), lr=0.001)
 def train_model(model, criterion, optimizer, train_loader, val_loader, epochs=10):
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
     model.to(device)
-
+    
     if rank == 0:
-        start = time.time()
+        dataiter = iter(train_loader)
+        images, labels = next(dataiter)
+        # create grid of images
+        img_grid = torchvision.utils.make_grid(images)
+        # show images
+        matplotlib_imshow(img_grid, one_channel=True)
+        # write to tensorboard
+        writer.add_image('images', img_grid)
 
     for epoch in range(epochs):
         model.train()
@@ -76,27 +103,27 @@ def train_model(model, criterion, optimizer, train_loader, val_loader, epochs=10
 
         if rank == 0:
             print(f'Epoch {epoch+1}, Loss: {running_loss/len(train_loader)}')
+            writer.add_scalar('training loss', running_loss / len(train_loader), epoch)
 
-        # Validation step, note that only results from rank 0 are used here.
+        # Validation step
         model.eval()
         correct = 0
         total = 0
+        
         with torch.no_grad():
             for images, labels in val_loader:
                 images, labels = images.to(device), labels.to(device)
                 outputs = model(images)
+        
                 _, predicted = torch.max(outputs, 1)
                 total += labels.size(0)
                 correct += (predicted == labels).sum().item()
 
         if rank == 0:
             print(f'Accuracy: {100 * correct / total}%')
+            writer.add_scalar('validation accuracy', 100*correct/total , epoch)
 
-    if rank == 0:
-        print(f"Time elapsed (s): {time.time()-start}")
-
-
-with HDF5Dataset('/project/project_462000002/LUMI-AI-example/train_images.hdf5', transform=transform) as full_train_dataset:
+with HDF5Dataset('train_images.hdf5', transform=transform) as full_train_dataset:
 
     # Splitting the dataset into train and validation sets
     train_size = int(0.8 * len(full_train_dataset))
@@ -114,3 +141,30 @@ with HDF5Dataset('/project/project_462000002/LUMI-AI-example/train_images.hdf5',
     dist.destroy_process_group()
 
 torch.save(model.state_dict(), 'vit_b_16_imagenet.pth')
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
