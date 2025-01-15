@@ -16,7 +16,7 @@ if rank == 0:
     writer = SummaryWriter('runs')
 ```
 
-After having configured the logger we can visualize some of the images we use as a grid with Matplotlib like so:
+After having configured the logger, we can visualize some of the images we use as a grid with Matplotlib like so:
 
 ```bash
 import matplotlib.pyplot as plt
@@ -41,7 +41,10 @@ if rank == 0:
     # write to tensorboard
     writer.add_image('images', img_grid)
 ```
-![Image title](assets/images/view_images.png){ align=left }
+
+The images will then be visualized in TensorBoard similar to the following:
+
+![Image title](assets/images/view_images.png)
 
 Graphs of the training loss and validation accuracy can also be gathered with the addition of 2 lines of code:
 ```bash
@@ -54,14 +57,17 @@ if rank == 0:
     writer.add_scalar('validation accuracy', 100*correct/total , epoch)
 
 ```
+In TensorBoard, the collected data will be visualized similar to the following:
 
-![Image title](assets/images/loss.png){ align=left }
+![Image title](assets/images/loss.png)
+
+For a full example that integrates TensorBoard to the DDP script, have a look at [tensorboard_ddp_visualtransformer.py](../tensorboard_ddp_visualtransformer.py).
 
 ## Visualizing the logs
 
 TensorBoard can be used on LUMI via the [web interface](https://docs.lumi-supercomputer.eu/runjobs/webui/) by selecting "TensorBoard" from the "Apps" menu. Once you have the logs generated during execution, you can launch the TensorBoard server on a compute node, display the GUI and analyze the run.
 
-![Image title](assets/images/web_interface_tensorboard.png){ align=left }
+![Image title](assets/images/web_interface_tensorboard.png)
 
 
 To launch it, select the log directory where you have data to visualize, which in this case would be the path to the `runs` directory, and the resources for the Slurm job.
