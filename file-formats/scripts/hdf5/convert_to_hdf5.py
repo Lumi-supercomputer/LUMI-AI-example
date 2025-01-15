@@ -7,9 +7,6 @@ from torchvision.datasets import ImageFolder
 import torchvision.transforms as transforms
 from pathlib import Path
 
-sys.path.append('scripts/')
-from generics import time
-
 
 def create_hdf5(image_folder, output_file):
     dataset = ImageFolder(image_folder, transform=transforms.ToTensor())
@@ -27,7 +24,6 @@ def create_hdf5(image_folder, output_file):
                 print(f'Processed {i} images')
 
 
-@time('convert_to_hdf5')
 def main():
     folder_in = 'data-formats/raw/tiny-imagenet-200/'
     folder_out = 'data-formats/hdf5/'

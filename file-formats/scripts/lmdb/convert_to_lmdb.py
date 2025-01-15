@@ -17,8 +17,6 @@ from torchvision.transforms import transforms
 from torchvision.datasets import ImageFolder
 from torchvision import transforms, datasets
 
-sys.path.append('scripts/')
-from generics import time
 # Code adopted from https://github.com/rmccorm4/PyTorch-LMDB which is adopted from https://github.com/Lyken17/Efficient-PyTorch
 
 
@@ -73,7 +71,6 @@ def folder2lmdb(image_folder, output_file, write_frequency=100):
     db.close()
 
     
-@time('convert_to_lmdb')
 def main():
     folder_in = 'data-formats/raw/tiny-imagenet-200/'
     folder_out = 'data-formats/lmdb/'

@@ -1,9 +1,9 @@
 import sys, argparse
 from time import time
-sys.path.append('../../scripts/lmdb')
+sys.path.append('scripts/lmdb')
 from lmdb_dataset import LMDBDataset
 
-sys.path.append('../../scripts/hdf5')
+sys.path.append('scripts/hdf5')
 from hdf5_dataset import HDF5Dataset
 import torchvision.transforms as transforms
 from torch.utils.data import DataLoader
@@ -25,20 +25,26 @@ def DataLoaderDifference(data, name, batch_size = 32, shuffle = True, num_worker
     print(f'Dataloader with input: batch_size={batch_size}, shuffle={shuffle}, num_workers={num_workers}')
     unique = set()
     print(f'Looping over N_sample={N_sample} iterations')
-    
+    single_image = None
+
     t2 = time()
     i = 0
     for data in loader:
         batch_images, batch_labels = data
-        for label in batch_labels:
+        for image, label in zip(batch_images, batch_labels):
             unique.add(int(label))
+            if single_image is None:
+                single_image = image
+                
         i += 1
         if i == N_sample // batch_size:
             break
-
+        
     print(f'{name} dataloader time: {time()-t2}')
     print(f'Number of unique labels: {len(unique)}')
     print(f'The first 10 labels are: {list(unique)[:10]}')
+    print(f'Total iterations of loader: {i}, corresponding to roughly {i * batch_size} images')
+    print(f'Image example:\n{single_image}')
 
 
 def loop_timing(data, name):
@@ -65,17 +71,9 @@ if __name__ == '__main__':
         #loop_timing(sqsh_data, 'SquashFS')
         DataLoaderDifference(sqsh_data, 'SquashFS', num_workers=num_workers, N_sample=N_sample)
     elif args.file_format == 'lmdb':
-        lmdb = '/project/project_462000002/joachimsode/file-format-ai-benchmark/LUMI-AI-example/data-formats/lmdb-test/data.mdb'
+        lmdb = '/scratch/project_462000002/joachimsode/file-format-ai-benchmark/imagenet-object-localization-challenge.lmdb'
         t3 = time()
         with LMDBDataset(lmdb, transform=transform) as lmdb_data:
-            print(f'LMDB loading time: {time()-t3}')
+            print(f'LMDB loading time: {time()-t3})')
             # loop_timing(lmdb_data, 'LMDB')
             DataLoaderDifference(lmdb_data, 'LMDB', num_workers=num_workers, N_sample=N_sample)
-    elif args.file_format == 'hdf5':
-        hdf5 = '/project/project_462000002/joachimsode/file-format-ai-benchmark/LUMI-AI-example/data-formats/hdf5/train_images.hdf5'
-        t3 = time()
-        with HDF5Dataset(hdf5, transform=transform) as hdf5_data:
-            print(f'HDF5 loading time: {time()-t3}')
-            # loop_timing(lmdb_data, 'LMDB')
-            DataLoaderDifference(hdf5_data, 'HDF5', num_workers=num_workers, N_sample=N_sample)
-    

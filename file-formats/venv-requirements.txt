@@ -5,7 +5,7 @@ tensorflow==2.17.0
 tfrecord[torch]==1.14.5
 
 # h5py dependency
-numpy=1.26.4
+numpy==1.26.4
 
 # tensorflow dependency
 absl-py==2.1.0

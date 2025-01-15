@@ -1,6 +1,3 @@
-from functools import wraps
-import cProfile
-import pstats
 import io
 from torchvision.datasets.folder import has_file_allowed_extension, IMG_EXTENSIONS
 from torchvision import get_image_backend
@@ -11,25 +8,6 @@ from collections.abc import Callable
 from pathlib import Path
 from torchvision.datasets import DatasetFolder
 from PIL import Image
-
-
-def time(file=''):
-    def decorator(func):
-        wraps(func)
-        def wrapper(*args, **kwargs):        
-            pr = cProfile.Profile()
-            pr.enable()
-            func(*args, **kwargs)
-            
-            pr.disable()
-            s = io.StringIO()
-            ps = pstats.Stats(pr, stream=s).sort_stats('tottime')
-            ps.print_stats()
-        
-            with open(f"timings/timing-{file}.txt", 'w+') as f:
-                f.write(s.getvalue())
-        return wrapper
-    return decorator
 
 
 # https://github.com/ain-soph/trojanzoo/blob/9cbd31c99d674c1f3e401321a23e78438fb8d222/trojanvision/utils/dataset.py#L54
