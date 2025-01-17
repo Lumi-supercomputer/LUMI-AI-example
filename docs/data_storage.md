@@ -39,36 +39,13 @@ An advanced Lustre feature known as ‘overstriping’ addresses some limitation
 ### LUMI-P
 LUMI-P has 32 OSTs (Object Storage Targets), which allows for optimum performance when stripe count is set to a 32 or 64.
 
-| Number of parallel tasks |stripe count|stripe size| read `(GBytes/sec)` per task | read `(GBytes/sec)` total | write `(GBytes/sec)` per task | write `(GBytes/sec)` total |
-|--------------------------|------------|-----------|------------------------------|---------------------------|-------------------------------|----------------------------|
-| 1                        |  1         | 1m        |      0.16                    |      TBD                  |       TBD                     |       TBD                  |
-| 1                        |  1         | 2m        |      0.16                    |      TBD                  |       TBD                     |       TBD                  |
-| 1                        |  1         | 4m        |      0.16                    |      TBD                  |       TBD                     |       TBD                  |
-| 2                        |  2         | 1g        |                              |                           |                               |                            |
-| 4                        |  4         | 2g        |                              |                           |                               |                            |
-| 8                        |  8         | 2g        |                              |                           |                               |                            |
-| 16                       |  16        | 2g        |      0.16                    |       2.57                |       TBD                     |       TBD                  |
-| ...                      |  ...       | 2g        |                              |                           |                               |                            |
-| 32                       |  32        | 2g        |      TBD                     |       TBD                 |       TBD                     |       TBD                  |
-| 58                       |  58        | 2g        |      TBD                     |       TBD                 |       TBD                     |       TBD                  |
+The average read / write to an OST in LUMI-P is 161 MB/second. Depending on the current filesystem load, if you have 16 concurrent threads accessing separate chunks of the file, you can achieve 16 * 161 = 2576 MB/sec throughput.
 
 
 ### LUMI-F
 LUMI-F has 58 OST (Object Storage Targets), which allows for optimum performance when stripe count is set to a 58 or a multiple of 58 ( see [](https://wiki.lustre.org/images/b/b3/LUG2019-Lustre_Overstriping_Shared_Write_Performance-Farrell.pdf)
 
-| Number of parallel tasks |stripe count|stripe size| read `(GBytes/sec)` per task | read `(GBytes/sec)` total | write `(GBytes/sec)` per task | write `(GBytes/sec)` total |
-|--------------------------|------------|-----------|------------------------------|---------------------------|-------------------------------|----------------------------|
-| 1                        |  1         | 1m        |      1.71                    |      1.71                 |       1.38                    |       1.38                 |
-| 1                        |  1         | 2m        |      1.71                    |      1.71                 |       1.38                    |       1.38                 |
-| 1                        |  1         | 4m        |      1.71                    |      1.71                 |       1.38                    |       1.38                 |
-| 2                        |  2         | 2m        |                              |                           |                               |                            |
-| 4                        |  4         | 2m        |                              |                           |                               |                            |
-| 8                        |  8         | 4m        |                              |                           |                               |                            |
-| 16                       |  16        | 4m        |      1.71                    |       22.7                |       22.3                    |       22.3                 |
-| ...                      |  ...       | 4m        |                              |                           |                               |                            |
-| 32                       |  32        | 4m        |      TBD                     |       TBD                 |       TBD                     |       TBD                  |
-| 58                       |  58        | 4m        |      TBD                     |       TBD                 |       TBD                     |       TBD                  |
-
+The average read / write to an OST in LUMI-F is 1710 MB/second. Depending on the current filesystem load, if you have 16 concurrent threads accessing separate chunks of the file, you can achieve 16 * 1710 = 2736 MB/sec throughput.
 
 
 
@@ -79,12 +56,7 @@ For tasks which can make use of a non-distributed filesystem, on a single node, 
 
 Mount point: `/tmp`
 
-| Number of parallel tasks | read `(GBytes/sec)` | write `(GBytes/sec)` |
-|--------------------------|---------------------|----------------------|
-| 1                        |      7.8            |         2.9          |
-| 2                        |      TBD            |         TBD          |
-| 4                        |      8.0            |         2.9          |
-| 8                        |      TBD            |         TBD          |
+The average read from RAM is 7800 MB/second. The average write into RAM is 2900 MB/second. Multiple readers / writers do not significantly increase these values, as the local RAM data buss is the bottleneck.
 
 
 ### RAMfs usage example
