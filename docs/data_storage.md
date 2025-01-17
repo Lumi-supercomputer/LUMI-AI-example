@@ -62,7 +62,7 @@ The average read from RAM is 7800 MB/second. The average write into RAM is 2900 
 ### RAMfs usage example
 If you have an application which is utilizes data local to a compute node, i.e. non-shared data used to perform computations or non-shared data resulting from computations, you can utilize local fast RAMfs.
 
-Example usage can be found in [./run_ramfs.sh](./run_ramfs.sh]) in tandem with [./visualtransformer_ramfs.py](./visualtransformer_ramfs.py)
+Example usage can be found in [../run_ramfs.sh](../run_ramfs.sh]) in tandem with [../visualtransformer_ramfs.py](../visualtransformer_ramfs.py)
 
 
 
