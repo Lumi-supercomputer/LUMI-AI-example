@@ -163,7 +163,10 @@ cython_debug/
 
 
 # manually added files and folders
-*hdf5
+*.hdf5
 *pth
-myenv/
+venv-extension/
+data-formats/
+timings/
 *out
+*~
