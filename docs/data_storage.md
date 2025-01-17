@@ -87,6 +87,13 @@ Mount point: `/tmp`
 | 8                        |      TBD            |         TBD          |
 
 
+### RAMfs usage example
+If you have an application which is utilizes data local to a compute node, i.e. non-shared data used to perform computations or non-shared data resulting from computations, you can utilize local fast RAMfs.
+
+Example usage can be found in [./run_ramfs.sh](./run_ramfs.sh]) in tandem with [./visualtransformer_ramfs.py](./visualtransformer_ramfs.py)
+
+
+
 ## Notes
 
 You may use `k`, `m` or `g` suffix for `--stripe-size N{k|m|g}` argument.
