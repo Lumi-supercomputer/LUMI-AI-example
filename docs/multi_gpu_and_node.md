@@ -235,6 +235,42 @@ srun singularity exec $CONTAINER bash -c 'export CXX=g++-12; $WITH_CONDA && sour
 ```
 
 
+#### srun
+##### Single-node, multi-GPU
+The jobscript to run the DeepSpeed example on a single LUMI-G node with all 4 GPUs (8 GCDs) is run_ds_srun.sh. Since we launch all processes through srun, we now set ntasks-per-node to 8, and cpus-per-task to 7. We again reserve the full node:
+
+```bash
+#SBATCH --nodes=1
+#SBATCH --gpus-per-node=8
+#SBATCH --ntasks-per-node=8
+#SBATCH --cpus-per-task=7
+#SBATCH --mem-per-gpu=60G
+```
+
+DeepSpeed uses a number of environment variables to initialize the distributed environment. We set these variables:
+
+```bash
+export MASTER_ADDR=$(scontrol show hostnames $SLURM_JOB_NODELIST | head -n 1)
+export MASTER_PORT=29500
+export WORLD_SIZE=$SLURM_NPROCS
+#export LOCAL_WORLD_SIZE=$SLURM_GPUS_PER_NODE
+```
+
+Then we run as follows:
+```bash
+srun --cpu-bind=v,mask_cpu=$CPU_BIND_MASKS singularity exec $CONTAINER bash -c 'export CXX=g++-12; export RANK=$SLURM_PROCID; export LOCAL_RANK=$SLURM_LOCALID; $WITH_CONDA && source myenv_post_upgrade2/bin/activate && time python ds_visualtransformer.py --deepspeed --deepspeed_config ds_config.json'
+```
+Note that the export RANK and LOCAL_RANK environement variables are exported inside the container and cannot be exported in the slurm script, as they are only available inside the slurm jobstep (after srun has launched the process).
+
+##### Multi-node
+The jobscript to run the DeepSpeed example on 4 full LUMI-G nodes is run_ds_srun_4.sh.
+To run on multiple nodes, we only need to adjust the job requirements:
+
+```bash
+#SBATCH --nodes=4
+```
+
+
 ## CPU-GPU binding
 For optimal performance on a LUMI-G node, it is important to set the correct bindings between CPU cores and GCDs (see also https://docs.lumi-supercomputer.eu/runjobs/scheduled-jobs/distribution-binding/#gpu-binding). We illustrate how this can be achieved for two scenarios: when using the torchrun launcher, as well as srun. We use the PyTorch DDP example, but the steps are the same for the DeepSpeed example.
 
@@ -291,7 +327,7 @@ Since the bindings are not set in the python script but in the job submissions s
 
 
 ### RCCL environment variables
-In all job scripts, these environment variables should be set to make sure that RCCL uses the correct interfaces:
+In all job scripts, two environment variables should be set to make sure that RCCL uses the correct interfaces:
 
 ```bash
 # To have RCCL use the Slingshot interfaces:
@@ -300,4 +336,8 @@ export NCCL_SOCKET_IFNAME=hsn0,hsn1,hsn2,hsn3
 # To have RCCL use GPU RDMA:
 export NCCL_NET_GDR_LEVEL=PHB
 ```
+
+On a LUMI-G node, each GPU is connected to a 200Gb/s Network Interface Card (NIC) (see also https://docs.lumi-supercomputer.eu/hardware/lumig/). To make use of this connection, the environment variable NCCL_NET_GDR_LEVEL needs to be set to PHB. This variable determines the maximum distance between the NIC and the GPU for which GPU Direct RDMA is used. If this variable is set incorrectly, this could result in slower communication between GPUs on different nodes. Note that from ROCm 6.2 onwards, PHB is the default value of NCCL_NET_GDR_LEVEL.
+
+NCCL_SOCKET_IFNAME must be set to make RCCL use the Slingshot-11 interconnect to which each GPU is connected. If this is not set, RCCL will try to use a network interface that it has no access to and inter-node GPU-to-GPU communication will not work.
 
