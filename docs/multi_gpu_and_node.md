@@ -327,7 +327,7 @@ Since the bindings are not set in the python script but in the job submissions s
 
 
 ### RCCL environment variables
-In all job scripts, these environment variables should be set to make sure that RCCL uses the correct interfaces:
+In all job scripts, two environment variables should be set to make sure that RCCL uses the correct interfaces:
 
 ```bash
 # To have RCCL use the Slingshot interfaces:
@@ -336,4 +336,8 @@ export NCCL_SOCKET_IFNAME=hsn0,hsn1,hsn2,hsn3
 # To have RCCL use GPU RDMA:
 export NCCL_NET_GDR_LEVEL=PHB
 ```
+
+On a LUMI-G node, each GPU is connected to a 200Gb/s Network Interface Card (NIC) (see also https://docs.lumi-supercomputer.eu/hardware/lumig/). To make use of this connection, the environment variable NCCL_NET_GDR_LEVEL needs to be set to PHB. This variable determines the maximum distance between the NIC and the GPU for which GPU Direct RDMA is used. If this variable is set incorrectly, this could result in slower communication between GPUs on different nodes. Note that from ROCm 6.2 onwards, PHB is the default value of NCCL_NET_GDR_LEVEL.
+
+NCCL_SOCKET_IFNAME must be set to make RCCL use the Slingshot-11 interconnect to which each GPU is connected. If this is not set, RCCL will try to use a network interface that it has no access to and inter-node GPU-to-GPU communication will not work.
 
