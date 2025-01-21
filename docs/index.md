@@ -18,8 +18,8 @@ Before proceeding, please ensure you meet the following prerequisites:
 The guide is structured into the following sections:
 
 - [Setting up the environment](containers.md)
-- [Storage options for training data](data_storage.md)
 - [File formats for training data](file_formats.md) 
+- [Storage options for training data](data_storage.md)
 - [Scaling training to multiple GPUs and multiple nodes](multi_gpu_and_node.md)
 - [Profiling machine learning applications](profiling.md)
 - [TensorBoard visualization](tensorboard_visualization.md)
