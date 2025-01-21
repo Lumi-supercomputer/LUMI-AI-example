@@ -33,13 +33,13 @@ An advanced Lustre feature known as ‘overstriping’ addresses some limitation
 ### LUMI-P
 LUMI-P has 32 OSTs (Object Storage Targets), which allows for optimum performance for large files when stripe count is set to a 32 or 64.
 
-The average read / write to an OST in LUMI-P is 161 MB/second. Depending on the current filesystem load, if you have 16 concurrent threads accessing separate chunks of the file, you can achieve 16 * 161 = 2576 MB/sec throughput.
+The average read / write to an OST in LUMI-P is 161 MB/second for moving data to / form the memory of a computation node. Depending on the current filesystem load, if you have 16 concurrent threads accessing separate chunks of the file, you can achieve 16 * 161 = 2576 MB/sec throughput.
 
 
 ### LUMI-F
 LUMI-F has 58 OST (Object Storage Targets), which allows for optimum performance when stripe count is set to a 58 or a multiple of 58.
 
-The average read / write to an OST in LUMI-F is 1710 MB/second. Depending on the current filesystem load, if you have 16 concurrent threads accessing separate chunks of the file, you can achieve 16 * 1710 = 27360 MB/sec throughput.
+The average read / write to an OST in LUMI-F is 1710 MB/second for moving data to / form the memory of a computation node. Depending on the current filesystem load, if you have 16 concurrent threads accessing separate chunks of the file, you can achieve 16 * 1710 = 27360 MB/sec throughput.
 
 
 
