@@ -10,7 +10,7 @@ nav:
       - Data storage: data_storage.md
       - File formats: file_formats.md
       - Multi-GPU and Multi-node: multi_gpu_and_node.md
-      - Profiling and debugging: profiling_and_debugging.md
+      - Profiling: profiling.md
       - Visualization:
           - TensorBoard: tensorboard_visualization.md
           - MLflow: mlflow_visualization.md 
