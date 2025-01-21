@@ -237,7 +237,7 @@ srun singularity exec $CONTAINER bash -c 'export CXX=g++-12; $WITH_CONDA && sour
 
 #### srun
 ##### Single-node, multi-GPU
-The jobscript to run the DeepSpeed example on a single LUMI-G node with all 4 GPUs (8 GCDs) is run_ds_srun.sh. Since we launch all processes through srun, we now set ntasks-per-node to 8, and cpus-per-task to 7. We again reserve the full node:
+The jobscript to run the DeepSpeed example on a single LUMI-G node with all 4 GPUs (8 GCDs) is [run_ds_srun.sh](../run_ds_srun.sh). Since we launch all processes through srun, we now set ntasks-per-node to 8, and cpus-per-task to 7. We again reserve the full node:
 
 ```bash
 #SBATCH --nodes=1
@@ -263,7 +263,7 @@ srun --cpu-bind=v,mask_cpu=$CPU_BIND_MASKS singularity exec $CONTAINER bash -c '
 Note that the export RANK and LOCAL_RANK environement variables are exported inside the container and cannot be exported in the slurm script, as they are only available inside the slurm jobstep (after srun has launched the process).
 
 ##### Multi-node
-The jobscript to run the DeepSpeed example on 4 full LUMI-G nodes is run_ds_srun_4.sh.
+The jobscript to run the DeepSpeed example on 4 full LUMI-G nodes is [run_ds_srun_4.sh](../run_ds_srun_4.sh).
 To run on multiple nodes, we only need to adjust the job requirements:
 
 ```bash
