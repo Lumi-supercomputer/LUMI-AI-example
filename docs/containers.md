@@ -81,9 +81,3 @@ This approach allows extending environment without rebuilding the container from
 ## Custom images
 
 In theory, you can also bring your own container images or convert images from other registries (DockerHub for instance) to the singularity format. In this case it remains your responsibility to keep the container compatible with LUMI's hardware and system environment. We strongly recommend building your containers on top of the  LUMI base images provided. 
-
-## Putting it all together
-
-For the given [visualtransformer.py](../visualtransformer.py) python script, we can take the container `/appl/local/containers/sif-images/lumi-pytorch-rocm-6.2.1-python-3.12-pytorch-20240918-vllm-4075b35.sif` and extend it with a virtual environment in which we install the `h5py` package. To run this script on a single GPU, you can use the slurm script  [run.sh](../run.sh).
-
-
