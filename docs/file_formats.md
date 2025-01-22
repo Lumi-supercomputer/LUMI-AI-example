@@ -1,4 +1,7 @@
+# File formats for training data
+
 ## Introduction
+
 Generally, there are no one-size-fits-all file format suitable for all machine learning and artificial intelligence data. Different high-performance file formats has different strategies for increasing the read/write throughput, and these strategies might not be compatible with the format of the data (e.g. variable image sizes). As a result, this compatibility must first be determined before a optimal file format can be chosen. 
 
 Another practical issue is the data conversion necessary to change ones data from its current file format to the desired target file format. This is primarily an issue for large datasets containing more than hundreds of thousands of small files on a parallel file system like on LUMI. Converting the data to a raw format must be avoided at all cost to preserve the integrity of the file system for all users. This issue can be circumvented in various ways, one options is to prepare the data the desired file format before is it transferred to LUMI, another option is to convert directly from the initial format (often .zip) to the target file format.
