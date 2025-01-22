@@ -1,4 +1,4 @@
-# MLflow
+# MLflow visualization
 
 [MLflow](https://www.mlflow.org/) is an open source tool for tracking experiments and models in machine learning projects. MLflow can be easily installed with `pip install mlflow`. Adapting your code to use MLflow requires minimal modification, and the results can be easily displayed using the web interface.
 
