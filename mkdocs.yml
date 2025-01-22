@@ -6,9 +6,11 @@ site_description: >-
   This guide provides information on how to use the LUMI supercomputer for machine learning tasks.
 copyright: Copyright &copy; 2021 LUMI User Support Team
 nav:
+      - Home: index.md
+      - Quickstart: quickstart.md 
       - ML containers: containers.md
-      - Data storage: data_storage.md
       - File formats: file_formats.md
+      - Data storage: data_storage.md
       - Multi-GPU and Multi-node: multi_gpu_and_node.md
       - Profiling: profiling.md
       - Visualization:

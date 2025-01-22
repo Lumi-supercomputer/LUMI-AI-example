@@ -17,6 +17,7 @@ Before proceeding, please ensure you meet the following prerequisites:
 
 The guide is structured into the following sections:
 
+- [Quickstart](quickstart.md)
 - [Setting up the environment](containers.md)
 - [File formats for training data](file_formats.md) 
 - [Storage options for training data](data_storage.md)
