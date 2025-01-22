@@ -17,12 +17,12 @@ Before proceeding, please ensure you meet the following prerequisites:
 
 The guide is structured into the following sections:
 
-- [Quickstart](quickstart.md)
-- [Setting up the environment](containers.md)
+- [QuickStart](quickstart.md)
+- [Setting up your own environment](containers.md)
 - [File formats for training data](file_formats.md) 
-- [Storage options for training data](data_storage.md)
-- [Scaling training to multiple GPUs and multiple nodes](multi_gpu_and_node.md)
-- [Profiling machine learning applications](profiling.md)
+- [Data Storage Options](data_storage.md)
+- [Multi-GPU and Multi-Node Training](multi_gpu_and_node.md)
+- [Monitoring and Profiling jobs](profiling.md)
 - [TensorBoard visualization](tensorboard_visualization.md)
 - [MLflow visualization](mlflow_visualization.md)
 
