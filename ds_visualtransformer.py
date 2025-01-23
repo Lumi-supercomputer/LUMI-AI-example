@@ -125,6 +125,6 @@ with HDF5Dataset("train_images.hdf5", transform=transform) as full_train_dataset
         val_dataset, sampler=val_sampler, batch_size=32, num_workers=7
     )
 
-    train_model(args, model, criterion, optimizer, train_loader, val_loader, 2)
+    train_model(args, model, criterion, optimizer, train_loader, val_loader)
 
 torch.save(model.state_dict(), "vit_b_16_imagenet.pth")
