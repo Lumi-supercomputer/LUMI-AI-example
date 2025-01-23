@@ -10,6 +10,7 @@ from hdf5_dataset import HDF5Dataset
 import torch.distributed as dist
 from torch.utils.data.distributed import DistributedSampler
 
+
 # The performance of the CPU mapping needs to be tested
 def set_cpu_affinity(local_rank):
     LUMI_GPU_CPU_map = {
@@ -30,23 +31,26 @@ def set_cpu_affinity(local_rank):
     print(f"Rank {rank} (local {local_rank}) binding to cpus: {cpu_list}")
     psutil.Process().cpu_affinity(cpu_list)
 
-dist.init_process_group(backend='nccl')
 
-local_rank = int(os.environ['LOCAL_RANK'])
+dist.init_process_group(backend="nccl")
+
+local_rank = int(os.environ["LOCAL_RANK"])
 torch.cuda.set_device(local_rank)
 rank = int(os.environ["RANK"])
 set_cpu_affinity(local_rank)
 
 # Define transformations
-transform = transforms.Compose([
-    transforms.Resize(256),
-    transforms.CenterCrop(224),
-    transforms.ToTensor(),
-    transforms.Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225]),
-])
+transform = transforms.Compose(
+    [
+        transforms.Resize(256),
+        transforms.CenterCrop(224),
+        transforms.ToTensor(),
+        transforms.Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225]),
+    ]
+)
 
 
-model = vit_b_16(weights='DEFAULT').to(local_rank)
+model = vit_b_16(weights="DEFAULT").to(local_rank)
 model = DistributedDataParallel(model, device_ids=[local_rank])
 
 criterion = torch.nn.CrossEntropyLoss()
@@ -54,6 +58,8 @@ optimizer = torch.optim.Adam(model.parameters(), lr=0.001)
 
 
 def train_model(model, criterion, optimizer, train_loader, val_loader, epochs=10):
+    # note that "cuda" is used as a general reference to GPUs,
+    # even when running on AMD GPUs that use ROCm
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
     model.to(device)
 
@@ -75,7 +81,7 @@ def train_model(model, criterion, optimizer, train_loader, val_loader, epochs=10
             running_loss += loss.item()
 
         if rank == 0:
-            print(f'Epoch {epoch+1}, Loss: {running_loss/len(train_loader)}')
+            print(f"Epoch {epoch+1}, Loss: {running_loss/len(train_loader)}")
 
         # Validation step, note that only results from rank 0 are used here.
         model.eval()
@@ -90,27 +96,33 @@ def train_model(model, criterion, optimizer, train_loader, val_loader, epochs=10
                 correct += (predicted == labels).sum().item()
 
         if rank == 0:
-            print(f'Accuracy: {100 * correct / total}%')
+            print(f"Accuracy: {100 * correct / total}%")
 
     if rank == 0:
         print(f"Time elapsed (s): {time.time()-start}")
 
 
-with HDF5Dataset('/project/project_462000002/LUMI-AI-example/train_images.hdf5', transform=transform) as full_train_dataset:
+with HDF5Dataset("train_images.hdf5", transform=transform) as full_train_dataset:
 
     # Splitting the dataset into train and validation sets
     train_size = int(0.8 * len(full_train_dataset))
     val_size = len(full_train_dataset) - train_size
-    train_dataset, val_dataset = random_split(full_train_dataset, [train_size, val_size])
+    train_dataset, val_dataset = random_split(
+        full_train_dataset, [train_size, val_size]
+    )
 
     train_sampler = DistributedSampler(train_dataset)
-    train_loader = DataLoader(train_dataset, sampler=train_sampler, batch_size=32, num_workers=7)
+    train_loader = DataLoader(
+        train_dataset, sampler=train_sampler, batch_size=32, num_workers=7
+    )
 
     val_sampler = DistributedSampler(val_dataset)
-    val_loader = DataLoader(val_dataset, sampler=val_sampler, batch_size=32, num_workers=7)
+    val_loader = DataLoader(
+        val_dataset, sampler=val_sampler, batch_size=32, num_workers=7
+    )
 
     train_model(model, criterion, optimizer, train_loader, val_loader)
 
     dist.destroy_process_group()
 
-torch.save(model.state_dict(), 'vit_b_16_imagenet.pth')
+torch.save(model.state_dict(), "vit_b_16_imagenet.pth")
