@@ -57,3 +57,15 @@ An example of using RAMfs for the visualtransformer script can be found in [run_
  - [Loading Training data on LUMI](https://462000265.lumidata.eu/ai-20241126/files/LUMI-ai-20241126-10-Training_Data_on_LUMI.pdf)
  - [LUG2019-Lustre_Overstriping_Shared_Write_Performance-Farrell.pdf](https://wiki.lustre.org/images/b/b3/LUG2019-Lustre_Overstriping_Shared_Write_Performance-Farrell.pdf)
  - [Configuring Lustre File Striping](https://wiki.lustre.org/index.php/Configuring_Lustre_File_Striping)
+
+ ### Table of contents
+
+- [Home](index.md)
+- [QuickStart](quickstart.md)
+- [Setting up your own environment](containers.md)
+- [File formats for training data](file_formats.md) 
+- [Data Storage Options](data_storage.md)
+- [Multi-GPU and Multi-Node Training](multi_gpu_and_node.md)
+- [Monitoring and Profiling jobs](profiling.md)
+- [TensorBoard visualization](tensorboard_visualization.md)
+- [MLflow visualization](mlflow_visualization.md)

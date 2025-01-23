@@ -68,3 +68,13 @@ Note that chrome tabs are usually limited to around 2 GB of memory usage and tha
 
 If the framework-level profiling is not sufficient and you want to investigate hardware-level performance, you can use AMD's profiling tools. The [LUMI training materials](https://lumi-supercomputer.github.io/LUMI-training-materials/) provide multiple lectures on how to use AMD's profilers `rocprof`, `Omnitrace` and `Omniperf`. For a short introduction to `rocprof`, have a look at the lecture ["Understanding GPU activity & checking jobs"](https://lumi-supercomputer.github.io/LUMI-training-materials/ai-20241126/extra_04_CheckingGPU/) from the last AI workshop. If you need a detailed introduction to all AMD profilers provided on LUMI, we recommend the lecture material of the last [Performance Analysis and Optimization Workshop](https://lumi-supercomputer.github.io/LUMI-training-materials/paow-20240611/).
 
+ ### Table of contents
+
+- [Home](index.md)
+- [QuickStart](quickstart.md)
+- [Setting up your own environment](containers.md)
+- [File formats for training data](file_formats.md) 
+- [Data Storage Options](data_storage.md)
+- [Multi-GPU and Multi-Node Training](multi_gpu_and_node.md)
+- [Monitoring and Profiling jobs](profiling.md)
+- [TensorBoard visualization](tensorboard_visualization.md)

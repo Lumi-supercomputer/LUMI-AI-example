@@ -86,3 +86,14 @@ For the large imagenet, we loop through 200.000 images out of the 1.2 million im
 |   LMDB   | 1546.53  |  65.07  |  3  |
 
 where we see the speed-up of roughly 28% for LMDB compared to squashfs. 
+
+ ### Table of contents
+
+- [Home](index.md)
+- [QuickStart](quickstart.md)
+- [Setting up your own environment](containers.md)
+- [File formats for training data](file_formats.md) 
+- [Data Storage Options](data_storage.md)
+- [Multi-GPU and Multi-Node Training](multi_gpu_and_node.md)
+- [Monitoring and Profiling jobs](profiling.md)
+- [TensorBoard visualization](tensorboard_visualization.md)

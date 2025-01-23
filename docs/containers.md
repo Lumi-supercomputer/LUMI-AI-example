@@ -81,3 +81,14 @@ This approach allows extending environment without rebuilding the container from
 ## Custom images
 
 In theory, you can also bring your own container images or convert images from other registries (DockerHub for instance) to the singularity format. In this case it remains your responsibility to keep the container compatible with LUMI's hardware and system environment. We strongly recommend building your containers on top of the  LUMI base images provided. 
+
+ ### Table of contents
+
+- [Home](index.md)
+- [QuickStart](quickstart.md)
+- [Setting up your own environment](containers.md)
+- [File formats for training data](file_formats.md) 
+- [Data Storage Options](data_storage.md)
+- [Multi-GPU and Multi-Node Training](multi_gpu_and_node.md)
+- [Monitoring and Profiling jobs](profiling.md)
+- [TensorBoard visualization](tensorboard_visualization.md)

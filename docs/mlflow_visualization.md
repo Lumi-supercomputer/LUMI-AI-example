@@ -58,4 +58,12 @@ The default resource settings should be fine for most cases.
 Once the session has started you can see graphs for loss and accuracy similar to this:
 ![Image title](assets/images/mlflow.png)
 
+ ### Table of contents
 
+- [Home](index.md)
+- [QuickStart](quickstart.md)
+- [Setting up your own environment](containers.md)
+- [File formats for training data](file_formats.md) 
+- [Data Storage Options](data_storage.md)
+- [Multi-GPU and Multi-Node Training](multi_gpu_and_node.md)
+- [Monitoring and Profiling jobs](profiling.md)
