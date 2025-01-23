@@ -57,3 +57,15 @@ Accuracy: 21.265%
 ```
 
 Congratulations! You have run your first training job on LUMI. The next chapter [Setting up your own environment](containers.md) will explain in more detail how the environment was set up and how you can set up your own environment for your AI projects on LUMI.
+
+ ### Table of contents
+
+- [Home](index.md)
+- [QuickStart](quickstart.md)
+- [Setting up your own environment](containers.md)
+- [File formats for training data](file_formats.md) 
+- [Data Storage Options](data_storage.md)
+- [Multi-GPU and Multi-Node Training](multi_gpu_and_node.md)
+- [Monitoring and Profiling jobs](profiling.md)
+- [TensorBoard visualization](tensorboard_visualization.md)
+- [MLflow visualization](mlflow_visualization.md)
