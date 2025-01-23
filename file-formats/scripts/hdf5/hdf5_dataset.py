@@ -3,15 +3,16 @@ from torch.utils.data import Dataset, DataLoader
 from torchvision.transforms.functional import to_pil_image
 import h5py
 
+
 class HDF5Dataset(Dataset):
     def __init__(self, file_path, transform=None):
         self.file_path = file_path
         self.transform = transform
-        
+
     def __enter__(self):
-        self.file = h5py.File(self.file_path, 'r')
-        self.images = self.file['images']
-        self.labels = self.file['labels']
+        self.file = h5py.File(self.file_path, "r")
+        self.images = self.file["images"]
+        self.labels = self.file["labels"]
         return self
 
     def __exit__(self, type, value, traceback):

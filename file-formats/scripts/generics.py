@@ -13,18 +13,30 @@ from PIL import Image
 # https://github.com/ain-soph/trojanzoo/blob/9cbd31c99d674c1f3e401321a23e78438fb8d222/trojanvision/utils/dataset.py#L54
 # https://github.com/koenvandesande/vision/blob/read_zipped_data/torchvision/datasets/zippedfolder.py
 class ZipFolder(DatasetFolder):
-    def __init__(self, root: str, transform: Callable | None = None, target_transform: Callable | None = None,
-                 is_valid_file: Callable[[str], bool] | None = None, memory: bool = True) -> None:
-        if not root.lower().endswith('.zip'):
+    def __init__(
+        self,
+        root: str,
+        transform: Callable | None = None,
+        target_transform: Callable | None = None,
+        is_valid_file: Callable[[str], bool] | None = None,
+        memory: bool = True,
+    ) -> None:
+        if not root.lower().endswith(".zip"):
             raise TypeError("Need zip file for data source: ", root)
         if memory:
-            with open(root, 'rb') as zf:
+            with open(root, "rb") as zf:
                 data = zf.read()
-            self.root_data = zipfile.ZipFile(io.BytesIO(data), 'r')
+            self.root_data = zipfile.ZipFile(io.BytesIO(data), "r")
         else:
-            self.root_data = zipfile.ZipFile(root, 'r')
-        super().__init__(root=root, loader=self.raw_loader, extensions=IMG_EXTENSIONS if is_valid_file is None else None,
-                         transform=transform, target_transform=target_transform, is_valid_file=is_valid_file)
+            self.root_data = zipfile.ZipFile(root, "r")
+        super().__init__(
+            root=root,
+            loader=self.raw_loader,
+            extensions=IMG_EXTENSIONS if is_valid_file is None else None,
+            transform=transform,
+            target_transform=target_transform,
+            is_valid_file=is_valid_file,
+        )
         self.imgs = self.samples
 
     @staticmethod
@@ -32,8 +44,8 @@ class ZipFolder(DatasetFolder):
         root = os.path.normpath(root)
         folder_dir, folder_base = os.path.split(root)
         if zip_path is None:
-            zip_path = os.path.join(folder_dir, f'{folder_base}_store.zip')
-        with zipfile.ZipFile(zip_path, mode='w', compression=zipfile.ZIP_STORED) as zf:
+            zip_path = os.path.join(folder_dir, f"{folder_base}_store.zip")
+        with zipfile.ZipFile(zip_path, mode="w", compression=zipfile.ZIP_STORED) as zf:
             for walk_root, walk_dirs, walk_files in os.walk(root):
                 zip_root = walk_root.removeprefix(folder_dir)
                 for _file in walk_files:
@@ -53,17 +65,24 @@ class ZipFolder(DatasetFolder):
         both_none = extensions is None and is_valid_file is None
         both_something = extensions is not None and is_valid_file is not None
         if both_none or both_something:
-            raise ValueError("Both extensions and is_valid_file cannot be None or not None at the same time")
+            raise ValueError(
+                "Both extensions and is_valid_file cannot be None or not None at the same time"
+            )
         if extensions is not None:
+
             def is_valid_file(x: str) -> bool:
                 if len(Path(x).parts) > 3:
                     # Assume Path.parts = ('ILSVRC', 'Data', 'CLS-LOC', 'train', 'n02493793', 'n02493793_2317.JPEG')
                     # train_data = Path(x).parts[1] == 'Data' and Path(x).parts[3] == 'train'
                     # Assume Path.parts = ('tiny-imagenet-200', 'train', 'n03584254', 'images', 'n03584254_229.JPEG')
-                    train_data = Path(x).parts[1] == 'train'
+                    train_data = Path(x).parts[1] == "train"
                 else:
                     train_data = False
-                return has_file_allowed_extension(x, cast(tuple[str, ...], extensions)) and train_data
+                return (
+                    has_file_allowed_extension(x, cast(tuple[str, ...], extensions))
+                    and train_data
+                )
+
         is_valid_file = cast(Callable[[str], bool], is_valid_file)
         for filepath in self.root_data.namelist():
             if is_valid_file(filepath):
@@ -73,14 +92,15 @@ class ZipFolder(DatasetFolder):
         return instances
 
     def zip_loader(self, path: str) -> Image.Image:
-        f = self.root_data.open(path, 'r')
-        if get_image_backend() == 'accimage':
+        f = self.root_data.open(path, "r")
+        if get_image_backend() == "accimage":
             try:
                 import accimage  # type: ignore
+
                 return accimage.Image(f)
             except IOError:
-                pass   # fall through to PIL
-        return Image.open(f).convert('RGB')
+                pass  # fall through to PIL
+        return Image.open(f).convert("RGB")
 
     def raw_loader(self, path: str) -> bytes:
         data = self.root_data.read(path)
