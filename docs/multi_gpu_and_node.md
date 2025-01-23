@@ -351,3 +351,4 @@ NCCL_SOCKET_IFNAME must be set to make RCCL use the Slingshot-11 interconnect to
 - [Multi-GPU and Multi-Node Training](multi_gpu_and_node.md)
 - [Monitoring and Profiling jobs](profiling.md)
 - [TensorBoard visualization](tensorboard_visualization.md)
+- [MLflow visualization](mlflow_visualization.md)

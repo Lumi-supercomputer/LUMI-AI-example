@@ -68,3 +68,4 @@ Congratulations! You have run your first training job on LUMI. The next chapter 
 - [Multi-GPU and Multi-Node Training](multi_gpu_and_node.md)
 - [Monitoring and Profiling jobs](profiling.md)
 - [TensorBoard visualization](tensorboard_visualization.md)
+- [MLflow visualization](mlflow_visualization.md)
