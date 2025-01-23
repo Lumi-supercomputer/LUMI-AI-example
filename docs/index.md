@@ -12,6 +12,7 @@ Before proceeding, please ensure you meet the following prerequisites:
 
 * A basic understanding of machine learning concepts and Python programming. This guide will focus primarily on aspects specific to training models on LUMI.
 * An active user account on LUMI and familiarity with its basic operations.
+* If you wish to run the included examples, you need to be part of a project with GPU hours on LUMI.
 
 ### Table of contents
 
