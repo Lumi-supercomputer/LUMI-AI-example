@@ -40,9 +40,9 @@ train_loader = DataLoader(train_dataset, sampler=train_sampler, batch_size=32, n
 ```
 
 ### Running the DDP example
-The distributed training job can be launched in multiple ways. We cover two methods: torchrun and srun.
+The distributed training job can be launched in multiple ways. We cover two methods: `torchrun` and `srun`.
 
-#### torchrun
+#### `torchrun`
 ##### Single-node, multi-GPU
 The jobscript to run the PyTorch DDP example on a single LUMI-G node with all 4 GPUs (8 GCDs) is [run_ddp_torchrun.sh](../run_ddp_torchrun.sh). We reserve the full node and launch a single task, with 56 cpus per task:
 
@@ -54,7 +54,7 @@ The jobscript to run the PyTorch DDP example on a single LUMI-G node with all 4 
 #SBATCH --mem=480G
 ```
 
-We use the torchrun launcher, which will launch 8 processes on the node:
+We use the `torchrun` launcher, which will launch 8 processes on the node:
 
 ```bash
 srun singularity exec $SIF bash -c '$WITH_CONDA && source visualtransformer-env/bin/activate && python -m torch.distributed.run --standalone --nnodes=1 --nproc_per_node=8 ddp_visualtransformer.py'
@@ -75,7 +75,7 @@ export MASTER_ADDR=$(scontrol show hostnames $SLURM_JOB_NODELIST | head -n 1)
 export MASTER_PORT=29500
 ```
 
-And run with torchrun, passing the --rdzv_* parameters to the launcher:
+And run with `torchrun`, passing the `--rdzv_*` parameters to the launcher:
 ```bash
 srun singularity exec $CONTAINER bash -c '$WITH_CONDA && source visualtransformer-env/bin/activate && python -m torch.distributed.run --nnodes=$SLURM_JOB_NUM_NODES --nproc_per_node=8 --rdzv_id=\$SLURM_JOB_ID --rdzv_backend=c10d --rdzv_endpoint="$MASTER_ADDR:$MASTER_PORT" ddp_visualtransformer.py'
 ```
@@ -107,7 +107,7 @@ srun singularity exec $CONTAINER bash -c "export RANK=\$SLURM_PROCID && export L
                                                                                 $WITH_CONDA && source visualtransformer-env/bin/activate && \
                                                                                 python ddp_visualtransformer.py"
 ```
-Note that the export RANK and LOCAL_RANK environement variables are exported inside the container and cannot be exported in the slurm script, as they are only available inside the slurm jobstep (after srun has launched the process).
+Note that the `RANK` and `LOCAL_RANK` environement variables are exported inside the container and cannot be exported in the Slurm script, as they are only available inside the Slurm jobstep (after srun has launched the process).
 
 ##### Multi-node
 The jobscript to run the PyTorch DDP example on 4 full LUMI-G nodes is [run_ddp_srun_4.sh](../run_ddp_srun.sh).
@@ -117,7 +117,7 @@ To run on multiple nodes, we only need to adjust the job requirements:
 #SBATCH --nodes=4
 ```
 
-The environment variables that will be used for the distributed initialization (MASTER_ADDR and MASTER_PORT) are already set and do not need to be passed to the launcher.
+The environment variables that will be used for the distributed initialization (`MASTER_ADDR` and `MASTER_PORT`) are already set and do not need to be passed to the launcher.
 
 
 ## DeepSpeed
@@ -195,9 +195,9 @@ The file ds_config.json contains the DeepSpeed configuration parameters. Some im
 
 
 ### Running the DeepSpeed example
-In this example, we use the torchrun launcher to launch the deepspeed example. It is also possible to launch the job using srun, in similar fashion as for the PyTorch DDP example.
+In this example, we use the `torchrun` launcher to launch the DeepSpeed example. It is also possible to launch the job using `srun`, in similar fashion as for the PyTorch DDP example.
 
-#### torchrun
+#### `torchrun`
 ##### Single-node, multi-GPU
 The jobscript to run the DeepSpeed example on a single LUMI-G node with all 4 GPUs (8 GCDs) is [run_ds_torchrun.sh](../run_ds_torchrun.sh). We reserve the full node and launch a single task, with 56 cpus per task:
 
@@ -215,7 +215,7 @@ export MASTER_ADDR=$(scontrol show hostnames $SLURM_JOB_NODELIST | head -n 1)
 export MASTER_PORT=29500
 ```
 
-We use the torchrun launcher, which will launch 8 processes on the node:
+We use the `torchrun` launcher, which will launch 8 processes on the node:
 ```bash
 srun singularity exec $CONTAINER bash -c 'export CXX=g++-12; $WITH_CONDA && source visualtransformer-env/bin/activate && python -m torch.distributed.run --nproc_per_node 8 --nnodes $SLURM_NNODES --node_rank $SLURM_PROCID --master_addr $MASTER_ADDR --master_port $MASTER_PORT ds_visualtransformer.py --deepspeed --deepspeed_config ds_config.json'
 ```
@@ -229,15 +229,15 @@ To run on multiple nodes, we adjust the job requirements:
 #SBATCH --tasks-per-node=1
 ```
 
-And pass the --rdzv_* parameters to the launcher:
+And pass the `--rdzv_*` parameters to the launcher:
 ```bash
 srun singularity exec $CONTAINER bash -c 'export CXX=g++-12; $WITH_CONDA && source visualtransformer-env/bin/activate && python -m torch.distributed.run --nnodes=$SLURM_JOB_NUM_NODES --nproc_per_node=8 --node_rank $SLURM_PROCID --rdzv_id=\$SLURM_JOB_ID --rdzv_backend=c10d --rdzv_endpoint="$MASTER_ADDR:$MASTER_PORT" ds_visualtransformer.py --deepspeed --deepspeed_config ds_config.json'
 ```
 
 
-#### srun
+#### `srun`
 ##### Single-node, multi-GPU
-The jobscript to run the DeepSpeed example on a single LUMI-G node with all 4 GPUs (8 GCDs) is [run_ds_srun.sh](../run_ds_srun.sh). Since we launch all processes through srun, we now set ntasks-per-node to 8, and cpus-per-task to 7. We again reserve the full node:
+The jobscript to run the DeepSpeed example on a single LUMI-G node with all 4 GPUs (8 GCDs) is [run_ds_srun.sh](../run_ds_srun.sh). Since we launch all processes through `srun`, we now set ntasks-per-node to 8, and cpus-per-task to 7. We again reserve the full node:
 
 ```bash
 #SBATCH --nodes=1
@@ -260,7 +260,7 @@ Then we run as follows:
 ```bash
 srun --cpu-bind=v,mask_cpu=$CPU_BIND_MASKS singularity exec $CONTAINER bash -c 'export CXX=g++-12; export RANK=$SLURM_PROCID; export LOCAL_RANK=$SLURM_LOCALID; $WITH_CONDA && source visualtransformer-env/bin/activate && python ds_visualtransformer.py --deepspeed --deepspeed_config ds_config.json'
 ```
-Note that the export RANK and LOCAL_RANK environement variables are exported inside the container and cannot be exported in the slurm script, as they are only available inside the slurm jobstep (after srun has launched the process).
+Note that the `RANK` and `LOCAL_RANK` environement variables are exported inside the container and cannot be exported in the Slurm script, as they are only available inside the Slurm jobstep (after srun has launched the process).
 
 ##### Multi-node
 The jobscript to run the DeepSpeed example on 4 full LUMI-G nodes is [run_ds_srun_4.sh](../run_ds_srun_4.sh).
@@ -272,7 +272,7 @@ To run on multiple nodes, we only need to adjust the job requirements:
 
 
 ## CPU-GPU binding
-For optimal performance on a LUMI-G node, it is important to set the correct bindings between CPU cores and GCDs (see also https://docs.lumi-supercomputer.eu/runjobs/scheduled-jobs/distribution-binding/#gpu-binding). We illustrate how this can be achieved for two scenarios: when using the torchrun launcher, as well as srun. We use the PyTorch DDP example, but the steps are the same for the DeepSpeed example.
+For optimal performance on a LUMI-G node, it is important to set the correct bindings between CPU cores and GCDs (see also https://docs.lumi-supercomputer.eu/runjobs/scheduled-jobs/distribution-binding/#gpu-binding). We illustrate how this can be achieved for two scenarios: when using the torchrun launcher, as well as `srun`. We use the PyTorch DDP example, but the steps are the same for the DeepSpeed example.
 
 #### torchrun
 When torchrun is used, there is no way to pass binding information to the launcher, so the GPU binding has to be set in the python script itself, as follows:
@@ -305,10 +305,10 @@ rank = int(os.environ["RANK"])
 set_cpu_affinity(local_rank)
 ```
 
-Note that this binding is specific to LUMI-G nodes and may not be optimal (or work) on other systems. Moreover, since the binding is implemented in the training script itself, this is not a portable solution. Using srun to launch the training job provides a more portable solution to GPU binding.
+Note that this binding is specific to LUMI-G nodes and may not be optimal (or work) on other systems. Moreover, since the binding is implemented in the training script itself, this is not a portable solution. Using `srun` to launch the training job provides a more portable solution to GPU binding.
 
-#### srun
-When srun is used, slurm binding options can be used in the job script:
+#### `srun`
+When `srun` is used, Slurm binding options can be used in the job script:
 
 ```bash
 CPU_BIND_MASKS="0x00fe000000000000,0xfe00000000000000,0x0000000000fe0000,0x00000000fe000000,0x00000000000000fe,0x000000000000fe00,0x000000fe00000000,0x0000fe0000000000"
@@ -318,16 +318,16 @@ srun --cpu-bind=mask_cpu=$CPU_BIND_MASKS singularity exec $CONTAINER bash -c "ex
                                                                                 python ddp_visualtransformer.py"
 ```
 
-To output the binding information, --cpu-bind=v can be passed to srun:
+To output the binding information, `--cpu-bind=v` can be passed to `srun`:
 ```bash
-srun --cpu-bind=mask_cpu=$CPU_BIND_MASKS singularity exec ...
+srun --cpu-bind=mask_cpu=$CPU_BIND_MASKS,v singularity exec ...
 ```
 
 Since the bindings are not set in the python script but in the job submissions script, this is a more portable solution than what can be achieved with the torchrun launcher.
 
 
 ### RCCL environment variables
-In all job scripts, two environment variables should be set to make sure that RCCL uses the correct interfaces:
+In all job scripts, two environment variables should be set to make sure that [RCCL](https://rocm.docs.amd.com/projects/rccl/en/latest/) uses the correct interfaces:
 
 ```bash
 # To have RCCL use the Slingshot interfaces:
@@ -337,9 +337,9 @@ export NCCL_SOCKET_IFNAME=hsn0,hsn1,hsn2,hsn3
 export NCCL_NET_GDR_LEVEL=PHB
 ```
 
-On a LUMI-G node, each GPU is connected to a 200Gb/s Network Interface Card (NIC) (see also https://docs.lumi-supercomputer.eu/hardware/lumig/). To make use of this connection, the environment variable NCCL_NET_GDR_LEVEL needs to be set to PHB. This variable determines the maximum distance between the NIC and the GPU for which GPU Direct RDMA is used. If this variable is set incorrectly, this could result in slower communication between GPUs on different nodes. Note that from ROCm 6.2 onwards, PHB is the default value of NCCL_NET_GDR_LEVEL.
+On a LUMI-G node, each GPU is connected to a 200Gb/s Network Interface Card (NIC) (see also https://docs.lumi-supercomputer.eu/hardware/lumig/). To make use of this connection, the environment variable `NCCL_NET_GDR_LEVEL` needs to be set to `PHB`. This variable determines the maximum distance between the NIC and the GPU for which GPU Direct RDMA is used. If this variable is set incorrectly, this could result in slower communication between GPUs on different nodes. Note that from ROCm 6.2 onwards, `PHB` is the default value of `NCCL_NET_GDR_LEVEL`.
 
-NCCL_SOCKET_IFNAME must be set to make RCCL use the Slingshot-11 interconnect to which each GPU is connected. If this is not set, RCCL will try to use a network interface that it has no access to and inter-node GPU-to-GPU communication will not work.
+`NCCL_SOCKET_IFNAME` must be set to make RCCL use the Slingshot-11 interconnect to which each GPU is connected. If this is not set, RCCL will try to use a network interface that it has no access to and inter-node GPU-to-GPU communication will not work.
 
  ### Table of contents
 
