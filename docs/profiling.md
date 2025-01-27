@@ -36,7 +36,7 @@ sbatch run_ddp.sh
 
 ![Image title](assets/rocm-smi-8-gpu.png)
 
-All eight devices are now listed in the output. Note that power consumption is only listed for half of the devices. This is due to the fact that one MI20x GPU consists of two graphical compute dies (GCD). In the context of `rocm-smi` and PyTorch in general, every GCD is listed as a separate GPU, but the power budget is shared between two GCDs. When both GPUs are fully utilized, the power consumption will be around 500W.
+All eight devices are now listed in the output. Note that power consumption is only listed for half of the devices. This is due to the fact that one MI250x GPU consists of two graphical compute dies (GCD). In the context of `rocm-smi` and PyTorch in general, every GCD is listed as a separate GPU, but the power budget is shared between two GCDs. When both GPUs are fully utilized, the power consumption will be around 500W.
 
 ## PyTorch profiler
 
@@ -66,7 +66,7 @@ Note that chrome tabs are usually limited to around 2 GB of memory usage and tha
 
 ## AMD profilers
 
-If the framework-level profiling is not sufficient and you want to investigate hardware-level performance, you can use AMD's profiling tools. The [LUMI training materials](https://lumi-supercomputer.github.io/LUMI-training-materials/) provide multiple lectures on how to use AMD's profilers `rocprof`, `Omnitrace` and `Omniperf`. For a short introduction to `rocprof`, have a look at the lecture ["Understanding GPU activity & checking jobs"](https://lumi-supercomputer.github.io/LUMI-training-materials/ai-20241126/extra_04_CheckingGPU/) from the last AI workshop. If you need a detailed introduction to all AMD profilers provided on LUMI, we recommend the lecture material of the last [Performance Analysis and Optimization Workshop](https://lumi-supercomputer.github.io/LUMI-training-materials/paow-20240611/).
+If the framework-level profiling is not sufficient and you want to investigate hardware-level performance, you can use AMD's profiling tools. The [LUMI training materials](https://lumi-supercomputer.github.io/LUMI-training-materials/) provide multiple lectures on how to use AMD's profilers `rocprof`, `Omnitrace` and `Omniperf`. For a short introduction to `rocprof`, have a look at the lecture ["Understanding GPU activity & checking jobs"](https://lumi-supercomputer.github.io/LUMI-training-materials/ai-20241126/extra_04_CheckingGPU/) from the LUMI AI workshop. If you need a detailed introduction to all AMD profilers provided on LUMI, we recommend the lecture material of the LUMI [Performance Analysis and Optimization Workshop](https://lumi-supercomputer.github.io/LUMI-training-materials/paow-20240611/).
 
  ### Table of contents
 
