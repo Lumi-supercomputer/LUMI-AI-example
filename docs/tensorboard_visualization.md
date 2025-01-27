@@ -61,7 +61,7 @@ In TensorBoard, the collected data will be visualized similar to the following:
 
 ![Image title](assets/images/loss.png)
 
-For a full example that integrates TensorBoard to the DDP script, have a look at [tensorboard_ddp_visualtransformer.py](../tensorboard_ddp_visualtransformer.py). For the batch script there are no changes required except of replacing [ddp_visualtransformer.py](../ddp_visualtransformer.py) with [tensorboard_ddp_visualtransformer.py](../tensorboard_ddp_visualtransformer.py).
+For a full example that integrates TensorBoard to the DDP script, have a look at [tensorboard_ddp_visualtransformer.py](../tensorboard_ddp_visualtransformer.py). For the batch script there are no changes required except for replacing [ddp_visualtransformer.py](../ddp_visualtransformer.py) with [tensorboard_ddp_visualtransformer.py](../tensorboard_ddp_visualtransformer.py).
 
 ## Visualizing the logs
 
