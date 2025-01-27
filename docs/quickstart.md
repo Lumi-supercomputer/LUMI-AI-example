@@ -8,7 +8,7 @@ First, you clone this repository to LUMI via the following command:
 git clone https://github.com/Lumi-supercomputer/LUMI-AI-example.git
 ```
 
-We recommend using your `/project/` or `/scratch/` directory of your project to clone the repository as your home directory (`$HOME`) contains only 20 GB of space intended to store user configuration files and personal data.
+We recommend using your `/project/` or `/scratch/` directory of your project to clone the repository as your home directory (`$HOME`) has a capacity of 20 GB and is intended to store user configuration files and personal data.
 
 Next, navigate to the `LUMI-AI-example` directory:
 
