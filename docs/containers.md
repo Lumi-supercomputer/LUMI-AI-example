@@ -18,7 +18,7 @@ The are two different ways how containers that are provided by the LUMI User Sup
 
 In this example we will use the second option as this approach is used in the [LUMI AI workshop material](https://github.com/Lumi-supercomputer/Getting_Started_with_AI_workshop).
 
-The latest versions of the provided containers can be found at `/appl/local/containers/sif-images`. This folder includes base containers, following the naming convention `lumi-rocm-rocm-version-number.sif` and containers that already include a ML framework and some commonly used packages. The names of the `.sif` files indicate which ML framework is installed and which versions are used for `ROCm`, `Python` and the framework. 
+The latest versions of the provided containers can be found at `/appl/local/containers/sif-images`. This folder includes base containers, following the naming convention `lumi-rocm-<rocm version number>.sif` and containers that already include a ML framework and some commonly used packages. The names of the `.sif` files indicate which ML framework is installed and which versions are used for `ROCm`, `Python` and the framework. 
 
 
 ## Interacting with a containerized environment
