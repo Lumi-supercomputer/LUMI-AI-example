@@ -1,6 +1,6 @@
 # Setting up your own environment
 
-Machine learning frameworks on LUMI serve as isolated environments in the form of container images with a set of Python packages. LUMI uses the [Singularity](https://docs.sylabs.io/guides/main/user-guide/) (SingularityCE) container runtime. Containers can be seen as encapsulated images of a specific environment including all required libraries, tools and python packages. Container images can be based on virtually any Linux distribution targeting the host architecture, but it still relies on the host kernel and kernel drivers. This plays a significant role in the case of LUMI.
+Machine learning frameworks on LUMI serve as isolated environments in the form of container images with a set of Python packages. LUMI uses the [Singularity](https://docs.sylabs.io/guides/main/user-guide/) (SingularityCE) container runtime. Containers can be seen as encapsulated images of a specific environment including all required libraries, tools and Python packages. Container images can be based on virtually any Linux distribution targeting the host architecture, but it still relies on the host kernel and kernel drivers. This plays a significant role in the case of LUMI.
 
 ## Containers on LUMI
 
@@ -57,9 +57,9 @@ srun singularity exec $SIF \
 ```
 For more information on SLURM on LUMI, please visit the [SLURM quistart page in our documentation](https://docs.lumi-supercomputer.eu/runjobs/scheduled-jobs/slurm-quickstart/).
 
-## Installing additional python packages in a container 
+## Installing additional Python packages in a container 
 
-You might find yourself in a situation where none of the provided containers contain all Python packages you need. One possible way of adding custom packages not included in the image is to use virtual environment on top of the conda environment. For this example, we need to add the HDF5 python package `h5py` to the environment:
+You might find yourself in a situation where none of the provided containers contain all Python packages you need. One possible way of adding custom packages not included in the image is to use virtual environment on top of the conda environment. For this example, we need to add the HDF5 Python package `h5py` to the environment:
 
 ```
 export SIF=/appl/local/containers/sif-images/lumi-pytorch-rocm-6.2.1-python-3.12-pytorch-20240918-vllm-4075b35.sif
@@ -76,7 +76,7 @@ This will create an `h5-env` environment in the working directory. The `--system
 singularity exec $SIF bash -c '$WITH_CONDA && h5-env/bin/activate && python my-script.py
 ```
 
-This approach allows extending environment without rebuilding the container from scratch every time a new package is added. The drawback is that the virtual environment is disjoint from the container which makes it difficult to move as the path to the virtual environment needs to be updated accordingly. Moreover, installing python packages creates typically thousands of small files. This puts a lot of strain on the Lustre file system and might exceed your file quota. This problem can be solved by creating a new container using the [cotainr tool](https://lumi-supercomputer.github.io/LUMI-training-materials/ai-20241126/extra_06_BuildingContainers/) or turning the virtual environment directory into a [SquashFS file](https://github.com/Lumi-supercomputer/Getting_Started_with_AI_workshop/blob/main/07_Extending_containers_with_virtual_environments_for_faster_testing/examples/extending_containers_with_venv.md).
+This approach allows extending environment without rebuilding the container from scratch every time a new package is added. The drawback is that the virtual environment is disjoint from the container which makes it difficult to move as the path to the virtual environment needs to be updated accordingly. Moreover, installing Python packages creates typically thousands of small files. This puts a lot of strain on the Lustre file system and might exceed your file quota. This problem can be solved by creating a new container using the [cotainr tool](https://lumi-supercomputer.github.io/LUMI-training-materials/ai-20241126/extra_06_BuildingContainers/) or turning the virtual environment directory into a [SquashFS file](https://github.com/Lumi-supercomputer/Getting_Started_with_AI_workshop/blob/main/07_Extending_containers_with_virtual_environments_for_faster_testing/examples/extending_containers_with_venv.md).
 
 ## Custom images
 
