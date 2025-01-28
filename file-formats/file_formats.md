@@ -21,7 +21,7 @@ mksquashfs ILSVRC/ imagenet.squashfs
 Then the `.squashfs` file is ready to be transferred to LUMI. This can be done in a variety of ways as seen in the [LUMI documentation](https://docs.lumi-supercomputer.eu/firststeps/movingdata/), where for this purpose `rsync` is particularly useful with the flags `--partial` and `--progress --stats` to keep partial transfers and display detailed transfer progress stats of the large single file. 
 
 ### Running PyTorch
-Running PyTorch with data stored in the `squashfs` file format is particularly simple because we are already utilizing containers which were introduced in chapter [Setting up your own environment](containers.md). The singularity container supports [mounting](https://docs.sylabs.io/guides/3.7/user-guide/bind_paths_and_mounts.html#squashfs-image-files) the `squashfs` file directly into the file system when running the container,
+Running PyTorch with data stored in the `squashfs` file format is particularly simple because we are already utilizing containers which were introduced in chapter [Setting up your own environment](../setting-up-environment/setup_environment.md). The singularity container supports [mounting](https://docs.sylabs.io/guides/3.7/user-guide/bind_paths_and_mounts.html#squashfs-image-files) the `squashfs` file directly into the file system when running the container,
 ```bash
 singularity run -B inputs.squashfs:/input-data:image-src=/ mycontainer.sif
 ```

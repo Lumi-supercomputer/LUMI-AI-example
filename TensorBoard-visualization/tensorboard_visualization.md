@@ -44,7 +44,7 @@ if rank == 0:
 
 The images will then be visualized in TensorBoard similar to the following:
 
-![Image title](assets/images/view_images.png)
+![Image title](../assets/images/view_images.png)
 
 Graphs of the training loss and validation accuracy can also be gathered with the addition of 2 lines of code:
 ```bash
@@ -59,9 +59,9 @@ if rank == 0:
 ```
 In TensorBoard, the collected data will be visualized similar to the following:
 
-![Image title](assets/images/loss.png)
+![Image title](../assets/images/loss.png)
 
-For a full example that integrates TensorBoard to the DDP script, have a look at [tensorboard_ddp_visualtransformer.py](../tensorboard_ddp_visualtransformer.py). For the batch script there are no changes required except for replacing [ddp_visualtransformer.py](../ddp_visualtransformer.py) with [tensorboard_ddp_visualtransformer.py](../tensorboard_ddp_visualtransformer.py).
+For a full example that integrates TensorBoard to the DDP script, have a look at [tensorboard_ddp_visualtransformer.py](tensorboard_ddp_visualtransformer.py). For the batch script there are no changes required except for replacing [ddp_visualtransformer.py](../multi-gpu-and-node/ddp_visualtransformer.py) with [tensorboard_ddp_visualtransformer.py](tensorboard_ddp_visualtransformer.py).
 
 ## Visualizing the logs
 

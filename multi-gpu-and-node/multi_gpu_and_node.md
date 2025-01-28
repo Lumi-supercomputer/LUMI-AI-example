@@ -7,7 +7,7 @@ Training Deep Learning models is a resource-intensive task. When the compute and
 PyTorch DDP can be used to implement data-parallelism in your training job. Data-parallel solutions are particularly useful when you would like to speed up the training process and your model fits in the memory of a single GPU. For example when you are training on a large dataset.
 
 ### Source code changes
-The script in [ddp_visualtransformer.py](../ddp_visualtransformer.py) implements PyTorch DDP on the visualtransformer example. The following changes to the source code are necessary:
+The script in [ddp_visualtransformer.py](ddp_visualtransformer.py) implements PyTorch DDP on the visualtransformer example. The following changes to the source code are necessary:
 
 Initialize the distributed environment:
 
@@ -44,7 +44,7 @@ The distributed training job can be launched in multiple ways. We cover two meth
 
 #### `torchrun`
 ##### Single-node, multi-GPU
-The jobscript to run the PyTorch DDP example on a single LUMI-G node with all 4 GPUs (8 GCDs) is [run_ddp_torchrun.sh](../run_ddp_torchrun.sh). We reserve the full node and launch a single task, with 56 cpus per task:
+The jobscript to run the PyTorch DDP example on a single LUMI-G node with all 4 GPUs (8 GCDs) is [run_ddp_torchrun.sh](run_ddp_torchrun.sh). We reserve the full node and launch a single task, with 56 cpus per task:
 
 ```bash
 #SBATCH --nodes=1
@@ -61,7 +61,7 @@ srun singularity exec $SIF bash -c '$WITH_CONDA && source visualtransformer-env/
 ```
 
 ##### Multi-node
-The jobscript to run the PyTorch DDP example on 4 full LUMI-G nodes is [run_ddp_torchrun_4.sh](../run_ddp_torchrun_4.sh).
+The jobscript to run the PyTorch DDP example on 4 full LUMI-G nodes is [run_ddp_torchrun_4.sh](run_ddp_torchrun_4.sh).
 To run on multiple nodes, we adjust the job requirements:
 
 ```bash
@@ -82,7 +82,7 @@ srun singularity exec $CONTAINER bash -c '$WITH_CONDA && source visualtransforme
 
 #### srun
 ##### Single-node, multi-GPU
-The jobscript to run the PyTorch DDP example on a single LUMI-G node with all 4 GPUs (8 GCDs) is [run_ddp_srun.sh](../run_ddp_srun.sh). Since we launch all processes through srun, we now set ntasks-per-node to 8, and cpus-per-task to 7. We again reserve the full node:
+The jobscript to run the PyTorch DDP example on a single LUMI-G node with all 4 GPUs (8 GCDs) is [run_ddp_srun.sh](run_ddp_srun.sh). Since we launch all processes through srun, we now set ntasks-per-node to 8, and cpus-per-task to 7. We again reserve the full node:
 
 ```bash
 #SBATCH --nodes=1
@@ -110,7 +110,7 @@ srun singularity exec $CONTAINER bash -c "export RANK=\$SLURM_PROCID && export L
 Note that the `RANK` and `LOCAL_RANK` environement variables are exported inside the container and cannot be exported in the Slurm script, as they are only available inside the Slurm jobstep (after srun has launched the process).
 
 ##### Multi-node
-The jobscript to run the PyTorch DDP example on 4 full LUMI-G nodes is [run_ddp_srun_4.sh](../run_ddp_srun.sh).
+The jobscript to run the PyTorch DDP example on 4 full LUMI-G nodes is [run_ddp_srun_4.sh](run_ddp_srun.sh).
 To run on multiple nodes, we only need to adjust the job requirements:
 
 ```bash
@@ -125,7 +125,7 @@ The environment variables that will be used for the distributed initialization (
 DeepSpeed implements a strategy for distributed training that mixes data parallelism with sharding of model parameters. It supports various levels of model sharding and offloading of parameters to CPU memory. DeepSpeed is particularly useful when your training job does not fit in the memory of a single GPU and you would like to scale your training job to multiple GPUs and/or nodes to leverage the increased combined memory capacity, as well as speed up the training job.
 
 ### Source code changes
-The script in [ds_visualtransformer.py](../ds_visualtransformer.py) implements DeepSpeed on the visualtransformer example. The following changes to the source code are necessary:
+The script in [ds_visualtransformer.py](ds_visualtransformer.py) implements DeepSpeed on the visualtransformer example. The following changes to the source code are necessary:
 
 
 Parse command-line parameters:
@@ -199,7 +199,7 @@ In this example, we use the `torchrun` launcher to launch the DeepSpeed example.
 
 #### `torchrun`
 ##### Single-node, multi-GPU
-The jobscript to run the DeepSpeed example on a single LUMI-G node with all 4 GPUs (8 GCDs) is [run_ds_torchrun.sh](../run_ds_torchrun.sh). We reserve the full node and launch a single task, with 56 cpus per task:
+The jobscript to run the DeepSpeed example on a single LUMI-G node with all 4 GPUs (8 GCDs) is [run_ds_torchrun.sh](run_ds_torchrun.sh). We reserve the full node and launch a single task, with 56 cpus per task:
 
 ```bash
 #SBATCH --nodes=1
@@ -221,7 +221,7 @@ srun singularity exec $CONTAINER bash -c 'export CXX=g++-12; $WITH_CONDA && sour
 ```
 
 ##### Multi-node
-The jobscript to run the DeepSpeed example on 4 full LUMI-G nodes is [run_ds_torchrun_4.sh](../run_ds_torchrun_4.sh).
+The jobscript to run the DeepSpeed example on 4 full LUMI-G nodes is [run_ds_torchrun_4.sh](run_ds_torchrun_4.sh).
 To run on multiple nodes, we adjust the job requirements:
 
 ```bash
@@ -237,7 +237,7 @@ srun singularity exec $CONTAINER bash -c 'export CXX=g++-12; $WITH_CONDA && sour
 
 #### `srun`
 ##### Single-node, multi-GPU
-The jobscript to run the DeepSpeed example on a single LUMI-G node with all 4 GPUs (8 GCDs) is [run_ds_srun.sh](../run_ds_srun.sh). Since we launch all processes through `srun`, we now set ntasks-per-node to 8, and cpus-per-task to 7. We again reserve the full node:
+The jobscript to run the DeepSpeed example on a single LUMI-G node with all 4 GPUs (8 GCDs) is [run_ds_srun.sh](run_ds_srun.sh). Since we launch all processes through `srun`, we now set ntasks-per-node to 8, and cpus-per-task to 7. We again reserve the full node:
 
 ```bash
 #SBATCH --nodes=1
@@ -263,7 +263,7 @@ srun --cpu-bind=v,mask_cpu=$CPU_BIND_MASKS singularity exec $CONTAINER bash -c '
 Note that the `RANK` and `LOCAL_RANK` environement variables are exported inside the container and cannot be exported in the Slurm script, as they are only available inside the Slurm jobstep (after srun has launched the process).
 
 ##### Multi-node
-The jobscript to run the DeepSpeed example on 4 full LUMI-G nodes is [run_ds_srun_4.sh](../run_ds_srun_4.sh).
+The jobscript to run the DeepSpeed example on 4 full LUMI-G nodes is [run_ds_srun_4.sh](run_ds_srun_4.sh).
 To run on multiple nodes, we only need to adjust the job requirements:
 
 ```bash

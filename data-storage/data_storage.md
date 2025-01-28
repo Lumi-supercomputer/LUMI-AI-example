@@ -49,7 +49,7 @@ For tasks which can make use of a non-distributed filesystem, on a single node, 
 
 The average read from RAM is 7800 MB/second. The average write into RAM is 2900 MB/second. Multiple readers / writers do not significantly increase these values, as the local RAM data bus is the bottleneck.
 
-An example of using RAMfs for the visualtransformer script can be found in [run_ramfs.sh](../run_ramfs.sh) in tandem with [visualtransformer_ramfs.py](../visualtransformer_ramfs.py)
+An example of using RAMfs for the visualtransformer script can be found in [run_ramfs.sh](run_ramfs.sh) in tandem with [visualtransformer_ramfs.py](visualtransformer_ramfs.py)
 
 
 ### Further reading

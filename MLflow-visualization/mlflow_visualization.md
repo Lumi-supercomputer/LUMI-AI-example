@@ -40,7 +40,7 @@ if rank == 0:
 
 ```
 
-For a full example, have a look at the script [mlflow_ddp_visualtransformer.py](../mlflow_ddp_visualtransformer.py).
+For a full example, have a look at the script [mlflow_ddp_visualtransformer.py](mlflow_ddp_visualtransformer.py).
 
 In addition to metrics, you can also log parameters and artifacts. See the [MLflow documentation for a list of logging functions](https://www.mlflow.org/docs/latest/tracking.html#logging-data-to-runs).
 
@@ -56,7 +56,7 @@ To launch it, log in to the web interface at [https://www.lumi.csc.fi/](https://
 The default resource settings should be fine for most cases.
 
 Once the session has started you can see graphs for loss and accuracy similar to this:
-![Image title](assets/images/mlflow.png)
+![Image title](../assets/images/mlflow.png)
 
  ### Table of contents
 
