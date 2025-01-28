@@ -21,7 +21,7 @@ mksquashfs ILSVRC/ imagenet.squashfs
 Then the `.squashfs` file is ready to be transferred to LUMI. This can be done in a variety of ways as seen in the [LUMI documentation](https://docs.lumi-supercomputer.eu/firststeps/movingdata/), where for this purpose `rsync` is particularly useful with the flags `--partial` and `--progress --stats` to keep partial transfers and display detailed transfer progress stats of the large single file. 
 
 ### Running PyTorch
-Running PyTorch with data stored in the `squashfs` file format is particularly simple because we are already utilizing containers which were introduced in chapter [Setting up your own environment](containers.md). The singularity container supports [mounting](https://docs.sylabs.io/guides/3.7/user-guide/bind_paths_and_mounts.html#squashfs-image-files) the `squashfs` file directly into the file system when running the container,
+Running PyTorch with data stored in the `squashfs` file format is particularly simple because we are already utilizing containers which were introduced in chapter [Setting up your own environment](../setting-up-environment/setup_environment.md). The singularity container supports [mounting](https://docs.sylabs.io/guides/3.7/user-guide/bind_paths_and_mounts.html#squashfs-image-files) the `squashfs` file directly into the file system when running the container,
 ```bash
 singularity run -B inputs.squashfs:/input-data:image-src=/ mycontainer.sif
 ```
@@ -90,12 +90,12 @@ We see a speed-up of roughly 28% for LMDB compared to squashfs.
 
  ### Table of contents
 
-- [Home](index.md)
-- [QuickStart](quickstart.md)
-- [Setting up your own environment](containers.md)
-- [File formats for training data](file_formats.md) 
-- [Data Storage Options](data_storage.md)
-- [Multi-GPU and Multi-Node Training](multi_gpu_and_node.md)
-- [Monitoring and Profiling jobs](profiling.md)
-- [TensorBoard visualization](tensorboard_visualization.md)
-- [MLflow visualization](mlflow_visualization.md)
+- [Home](../README.md)
+- [QuickStart](../quickstart/quickstart.md)
+- [Setting up your own environment](../setting-up-environment/setup_environment.md)
+- [File formats for training data](../file-formats/file_formats.md) 
+- [Data Storage Options](../data-storage/data_storage.md)
+- [Multi-GPU and Multi-Node Training](../multi-gpu-and-node/multi_gpu_and_node.md)
+- [Monitoring and Profiling jobs](../monitoring-and-profiling/profiling.md)
+- [TensorBoard visualization](../TensorBoard-visualization/tensorboard_visualization.md)
+- [MLflow visualization](../MLflow-visualization/mlflow_visualization.md)
