@@ -1,6 +1,6 @@
 # LUMI-AI-example
 
-This project is still work in progress and changes are made constatnly. For well tested examples have a look at the LUMI AI workshop material: https://github.com/Lumi-supercomputer/Getting_Started_with_AI_workshop
+This project is still work in progress and changes are made constantly. For well tested examples have a look at the LUMI AI workshop material: https://github.com/Lumi-supercomputer/Getting_Started_with_AI_workshop
 
 Visual transformer model in PyTorch, serving as an example of how to run AI applications on LUMI. 
 
