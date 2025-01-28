@@ -1,46 +1,36 @@
-# LUMI-AI-example
+# LUMI AI guide
 
-This project is still work in progress and changes are made constantly. For well tested examples have a look at the LUMI AI workshop material: https://github.com/Lumi-supercomputer/Getting_Started_with_AI_workshop
+This guide is designed to assist users in migrating their machine learning applications from smaller-scale computing environments to LUMI. We will walk you through a detailed example of training an image classification model using [PyTorch's Vision Transformer (VIT)](https://pytorch.org/vision/main/models/vision_transformer.html) on the [ImageNet dataset](https://www.image-net.org/).
 
-Visual transformer model in PyTorch, serving as an example of how to run AI applications on LUMI. 
+All Python and bash scripts referenced in this guide are accessible in this [GitHub repository](https://github.com/Lumi-supercomputer/LUMI-AI-example/tree/main). We start with a basic python script, [visualtransformer.py](../visualtransformer.py), that could run on your local machine and modify it over the next chapters to run it efficiently on LUMI.
 
-We use the [`torchvision vit_b_16`](https://pytorch.org/vision/main/models/generated/torchvision.models.vit_b_16.html#torchvision.models.vit_b_16) model and train it with the [tiny-imagenet](https://image-net.org/download-images.php) dataset. This project is meant to provide a sandbox for testing and benchmarking AI applications on LUMI and should eventually serve as an A-Z example as part of the LUMI AI documentation.
-Use [bigger models](https://pytorch.org/vision/main/models/vision_transformer.html) and larger dataset if required
+Even though this guide uses PyTorch, most of the covered topics are independent of the used machine learning framework. We therefore believe this guide is helpful for all new ML users on LUMI while also providing a concrete example that runs on LUMI.
 
-## HDF5 support
-The imagenet dataset consists of hundreds of thousands of single jpg files. To avoid the "many small files" problem the datasets can be transformed into a single HDF5 file with the script `turn_into_hdf5.py`. Note, that this increases the size of the data by one order of magnitude as this script does not compress the data in any form. 
+### Requirements
 
-## Running script on LUMI
-This github repo is cloned to `/project/project_462000002/LUMI-AI-example`. Training data, validation data, and the parameters of the model are in the same directory. The used container is extended via a virtual environment, as described [here](https://github.com/Lumi-supercomputer/Getting_Started_with_AI_workshop/blob/main/07_Extending_containers_with_virtual_environments_for_faster_testing/examples/extending_containers_with_venv.md), since `h5py` is not included in the container. The training and validation datasets are also uploaded to the `lumi-o:imagenet/` bucket. Anyone is welcome to work in that directory in order to minimize data storage, but please create a new branch.
+Before proceeding, please ensure you meet the following prerequisites:
 
+* A basic understanding of machine learning concepts and Python programming. This guide will focus primarily on aspects specific to training models on LUMI.
+* An active user account on LUMI and familiarity with its basic operations.
+* If you wish to run the included examples, you need to be part of a project with GPU hours on LUMI.
 
-## Building website
+### Table of contents
 
-Install the needed dependencies.
+The guide is structured into the following sections:
 
-```
-pip install -r requirements.txt
-```
-
-### Edit with live preview
-
-run 
-
-```
-mkdocs serve
-```
-
-This command will start a live-reloading local web server that can be accessed
-in a web browser via: http://127.0.0.1:8000. The local web serve will 
-automatically re-render and reload the site when you edit the documentation.
+- [QuickStart](quickstart/quickstart.md)
+- [Setting up your own environment](setting-up-environment/setup_environment.md)
+- [File formats for training data](file-formats/file_formats.md) 
+- [Data Storage Options](data-storage/data_storage.md)
+- [Multi-GPU and Multi-Node Training](multi-gpu-and-node/multi_gpu_and_node.md)
+- [Monitoring and Profiling jobs](monitoring-and-profiling/profiling.md)
+- [TensorBoard visualization](TensorBoard-visualization/tensorboard_visualization.md)
+- [MLflow visualization](MLflow-visualization/mlflow_visualization.md)
 
 
-### Generate the static site
+### Further reading
 
-To build a self-contained directory containing the full website run:
-
-```
-mkdocs build
-```
-
-The generated files will be located in the `site/` directory.
+- [LUMI software library, PyTorch](https://lumi-supercomputer.github.io/LUMI-EasyBuild-docs/p/PyTorch/)
+- [LUMI software library, TensorFlow](https://lumi-supercomputer.github.io/LUMI-EasyBuild-docs/t/TensorFlow/)
+- [LUMI software library, Jax](https://lumi-supercomputer.github.io/LUMI-EasyBuild-docs/j/jax/)
+- [Workshop material - Moving your AI training jobs to LUMI](https://lumi-supercomputer.github.io/LUMI-training-materials/ai-20240529/)
