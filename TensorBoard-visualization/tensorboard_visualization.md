@@ -1,5 +1,8 @@
 # TensorBoard visualization
 
+> [!NOTE]  
+> If you wish to run the included examples on LUMI, have a look at the [quickstart](../quickstart/quickstart.md) chapter for instructions on how to set up the required environment.
+
 [TensorBoard](https://www.tensorflow.org/tensorboard) is a tool for providing the measurements and visualizations needed during the machine learning workflow. It enables tracking experiment metrics like loss and accuracy, visualizing the model graph, projecting embeddings to a lower dimensional space, and much more.
 
 ## Collecting logs

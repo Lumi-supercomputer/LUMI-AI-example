@@ -1,5 +1,8 @@
 # Data Storage Options
 
+> [!NOTE]  
+> If you wish to run the included examples on LUMI, have a look at the [quickstart](../quickstart/quickstart.md) chapter for instructions on how to set up the required environment.
+
 This section describes the most useful data storage options for AI users on LUMI.
 
 Machine learning frameworks generally make extensive use of parallel processing to shorten time to obtain results. With the increased number of nodes available for computations, a single storage target might become a bottleneck for I/O, especially when large amounts of data are to be accessed.

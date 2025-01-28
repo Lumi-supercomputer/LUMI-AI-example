@@ -1,5 +1,8 @@
 # Multi-GPU and Multi-Node Training
 
+> [!NOTE]  
+> If you wish to run the included examples on LUMI, have a look at the [quickstart](../quickstart/quickstart.md) chapter for instructions on how to set up the required environment.
+
 Training Deep Learning models is a resource-intensive task. When the compute and memory resources of a single GPU no longer suffice to train your model, multi-GPU and multi-node solutions can be leveraged to distribute your training job over multiple GPUs or nodes. Various strategies exist to distribute Deep Learning workloads, and various frameworks exist that implement those strategies. In this section, we cover two popular methods: data-parallelism using PyTorch's Distributed Data-Parallel (DDP) module and a mix of data parallelism and model sharding using the DeepSpeed library. We describe the neccessary changes to the source code and how to launch the distributed training jobs on LUMI.
 
 ## PyTorch DDP
