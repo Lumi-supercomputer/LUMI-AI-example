@@ -60,12 +60,12 @@ Once the session has started you can see graphs for loss and accuracy similar to
 
  ### Table of contents
 
-- [Home](index.md)
-- [QuickStart](quickstart.md)
-- [Setting up your own environment](containers.md)
-- [File formats for training data](file_formats.md) 
-- [Data Storage Options](data_storage.md)
-- [Multi-GPU and Multi-Node Training](multi_gpu_and_node.md)
-- [Monitoring and Profiling jobs](profiling.md)
-- [TensorBoard visualization](tensorboard_visualization.md)
-- [MLflow visualization](mlflow_visualization.md)
+- [Home](../README.md)
+- [QuickStart](../quickstart/quickstart.md)
+- [Setting up your own environment](../setting-up-environment/setup_environment.md)
+- [File formats for training data](../file-formats/file_formats.md) 
+- [Data Storage Options](../data-storage/data_storage.md)
+- [Multi-GPU and Multi-Node Training](../multi-gpu-and-node/multi_gpu_and_node.md)
+- [Monitoring and Profiling jobs](../monitoring-and-profiling/profiling.md)
+- [TensorBoard visualization](../TensorBoard-visualization/tensorboard_visualization.md)
+- [MLflow visualization](../MLflow-visualization/mlflow_visualization.md)

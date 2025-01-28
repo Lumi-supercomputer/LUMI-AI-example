@@ -1,6 +1,6 @@
 # QuickStart
 
-This chapter covers how to set up the environment to run the [`visualtransformer.py`](../visualtransformer.py) script on LUMI. 
+This chapter covers how to set up the environment to run the [`visualtransformer.py`](visualtransformer.py) script on LUMI. 
 
 First, you clone this repository to LUMI via the following command:
 
@@ -16,7 +16,7 @@ Next, navigate to the `LUMI-AI-example` directory:
 cd LUMI-AI-example
 ```
 
-We now need to setup the environment if we wish to run the included python scripts. We will use one of the provided PyTorch containers that we extend with a virtual environment to install additional packages (this step will be explained in more detail in the next chapter [Setting up your own environment](containers.md)). The fastest way to achieve this is to use the provided script `set_up_environment.sh`:
+We now need to setup the environment if we wish to run the included python scripts. We will use one of the provided PyTorch containers that we extend with a virtual environment to install additional packages (this step will be explained in more detail in the next chapter [Setting up your own environment](../setting-up-environment/setup_environment.md)). The fastest way to achieve this is to use the provided script `set_up_environment.sh`:
 
 ```bash
 ./set_up_environment.sh
@@ -29,12 +29,12 @@ chmod +x set_up_environment.sh
 ```
 
 After the script has finished, you should see a new directory `visualtransformer-env` in the `LUMI-AI-example` directory. This directory contains the virtual environment with all the necessary packages installed that were not already provided by the PyTorch container. In addition, the script copied the training dataset for the Visual Transformer example to the `LUMI-AI-example` directory. 
-For this example, we use the [Tiny ImageNet Dataset](https://paperswithcode.com/dataset/tiny-imagenet) which is already transformed into the file system friendly hdf5 format (Chapter [File formats for training data](file_formats.md) explains in detail why this step is necessary). Please have a look at the terms of access for the ImageNet Dataset [here](https://www.image-net.org/download.php).
+For this example, we use the [Tiny ImageNet Dataset](https://paperswithcode.com/dataset/tiny-imagenet) which is already transformed into the file system friendly hdf5 format (Chapter [File formats for training data](../file-formats/file_formats.md) explains in detail why this step is necessary). Please have a look at the terms of access for the ImageNet Dataset [here](https://www.image-net.org/download.php).
 
-To run the Visual Transformer example, we need to use a batch job script. We provide a batch job script [`run.sh`](../run.sh) that you can use to run the [visualtransformer.py](../visualtransformer.py) script on a single GPU on a LUMI-G node. 
+To run the Visual Transformer example, we need to use a batch job script. We provide a batch job script [`run.sh`](run.sh) that you can use to run the [visualtransformer.py](visualtransformer.py) script on a single GPU on a LUMI-G node. 
 A quickstart to SLURM is provided in the [LUMI documentation](https://docs.lumi-supercomputer.eu/runjobs/scheduled-jobs/slurm-quickstart/). 
 
-To run the provided script yourself, you need to replace the `--account` flag in line 2 of the [`run.sh`](../run.sh) script with your own project account. You can find your project account by running the command `lumi-workspaces`.
+To run the provided script yourself, you need to replace the `--account` flag in line 2 of the [`run.sh`](run.sh) script with your own project account. You can find your project account by running the command `lumi-workspaces`.
 
 After you have replaced the `--account` flag, you can submit the job to the LUMI scheduler by running:
 
@@ -56,16 +56,16 @@ Accuracy: 21.265%
 ...
 ```
 
-Congratulations! You have run your first training job on LUMI. The next chapter [Setting up your own environment](containers.md) will explain in more detail how the environment was set up and how you can set up your own environment for your AI projects on LUMI.
+Congratulations! You have run your first training job on LUMI. The next chapter [Setting up your own environment](../setting-up-environment/setup_environment.md) will explain in more detail how the environment was set up and how you can set up your own environment for your AI projects on LUMI.
 
  ### Table of contents
 
-- [Home](index.md)
-- [QuickStart](quickstart.md)
-- [Setting up your own environment](containers.md)
-- [File formats for training data](file_formats.md) 
-- [Data Storage Options](data_storage.md)
-- [Multi-GPU and Multi-Node Training](multi_gpu_and_node.md)
-- [Monitoring and Profiling jobs](profiling.md)
-- [TensorBoard visualization](tensorboard_visualization.md)
-- [MLflow visualization](mlflow_visualization.md)
+- [Home](../README.md)
+- [QuickStart](../quickstart/quickstart.md)
+- [Setting up your own environment](../setting-up-environment/setup_environment.md)
+- [File formats for training data](../file-formats/file_formats.md) 
+- [Data Storage Options](../data-storage/data_storage.md)
+- [Multi-GPU and Multi-Node Training](../multi-gpu-and-node/multi_gpu_and_node.md)
+- [Monitoring and Profiling jobs](../monitoring-and-profiling/profiling.md)
+- [TensorBoard visualization](../TensorBoard-visualization/tensorboard_visualization.md)
+- [MLflow visualization](../MLflow-visualization/mlflow_visualization.md)
