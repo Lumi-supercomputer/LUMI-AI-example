@@ -67,7 +67,7 @@ For a full example that integrates TensorBoard to the DDP script, have a look at
 
 TensorBoard can be used on LUMI via the [web interface](https://docs.lumi-supercomputer.eu/runjobs/webui/) by selecting "TensorBoard" from the "Apps" menu. Once you have the logs generated during execution, you can launch the TensorBoard server on a compute node, display the GUI and analyze the run.
 
-![Image title](assets/images/web_interface_tensorboard.png)
+![Image title](../assets/images/web_interface_tensorboard.png)
 
 
 To launch it, select the log directory where you have data to visualize, which in this case would be the path to the `runs` directory, and the resources for the Slurm job.
