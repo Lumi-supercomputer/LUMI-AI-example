@@ -110,7 +110,7 @@ srun singularity exec $CONTAINER bash -c "export RANK=\$SLURM_PROCID && export L
 Note that the `RANK` and `LOCAL_RANK` environement variables are exported inside the container and cannot be exported in the Slurm script, as they are only available inside the Slurm jobstep (after srun has launched the process).
 
 ##### Multi-node
-The jobscript to run the PyTorch DDP example on 4 full LUMI-G nodes is [run_ddp_srun_4.sh](run_ddp_srun.sh).
+The jobscript to run the PyTorch DDP example on 4 full LUMI-G nodes is [run_ddp_srun_4.sh](run_ddp_srun_4.sh).
 To run on multiple nodes, we only need to adjust the job requirements:
 
 ```bash
