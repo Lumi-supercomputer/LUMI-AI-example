@@ -54,8 +54,6 @@ The process to convert to LMDB is quite similar to that of HDF5. We first need t
 ### Running PyTorch
 Similar to HDF5, we require a custom built `dataset` for the LMDB file format in order to efficiently load the data into PyTorch through the `DataLoader` framework. This can likewise be created using the `lmdb` Python library as illustrated [here](https://github.com/Lumi-supercomputer/LUMI-AI-example/blob/95444cb13eec48f6eb78d62f73449d859d0e8414/scripts/lmdb/lmdb_dataset.py#L10). The `dataset` is more complicated since we now  need to encode the data to binary ourselves. 
 
-The LMDB format has more possible performance optimization options available...
-
 ## Performance
 ### Synthetic Benchmark
 In the synthetic benchmark, we measure how quickly samples can be loaded into Python using the PyTorch `DataLoader` for the various different file formats. The loop time is measured for both the tiny and large ImageNet a number of times. Here we report the measured average and standard deviation. 
@@ -79,7 +77,7 @@ We can run a similar experience in a sequential job with one CPU core and `num_w
 |   HDF5   |  1884.7  |  0.46   |  5  |
 |   LMDB   |  209.95  |  15.99  |  5  |
 
-For the large imagenet, we loop through 200.000 out of the 1.2 million images for the formats compatible with varying image size. The job is again executed independently `N` times and identical `DataLoader` parameters are used.
+For the large imagenet, we loop through 200.000 out of the 1.2 million images for the formats compatible with varying image size. The varying image size pose a critical problem for the HDF5 file format, since it requires the data to fit into `ndarray`-like (d-dimensional hypercube) data structures. While data padding is possible, this is not pursued here to keep the comparison fair. The job is again executed independently `N` times and identical `DataLoader` parameters are used.
 
 |          | mean (s) | std (s) |  N  |
 | :------: | :------: | :-----: | :-: |
