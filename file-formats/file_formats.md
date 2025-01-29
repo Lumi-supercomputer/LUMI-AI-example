@@ -79,7 +79,7 @@ We can run a similar experience in a sequential job with one CPU core and `num_w
 |   HDF5   |  1884.7  |  0.46   |  5  |
 |   LMDB   |  209.95  |  15.99  |  5  |
 
-For the large imagenet, we loop through 200.000 out of the 1.2 million images for the formats compatible with varying image size. The job is again executed independently `N` times and identical `DataLoader` parameters are used.
+For the large imagenet, we loop through 200.000 out of the 1.2 million images for the formats compatible with varying image size. The varying image size pose a critical problem for the HDF5 file format, since it requires the data to fit into `ndarray`-like (d-dimensional hypercube) data structures. While data padding is possible, this is not pursued here to keep the comparison fair. The job is again executed independently `N` times and identical `DataLoader` parameters are used.
 
 |          | mean (s) | std (s) |  N  |
 | :------: | :------: | :-----: | :-: |
