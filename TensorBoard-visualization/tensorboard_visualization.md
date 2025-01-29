@@ -1,5 +1,8 @@
 # TensorBoard visualization
 
+> [!NOTE]  
+> If you wish to run the included examples on LUMI, have a look at the [quickstart](../quickstart/quickstart.md) chapter for instructions on how to set up the required environment.
+
 [TensorBoard](https://www.tensorflow.org/tensorboard) is a tool for providing the measurements and visualizations needed during the machine learning workflow. It enables tracking experiment metrics like loss and accuracy, visualizing the model graph, projecting embeddings to a lower dimensional space, and much more.
 
 ## Collecting logs
@@ -44,7 +47,7 @@ if rank == 0:
 
 The images will then be visualized in TensorBoard similar to the following:
 
-![Image title](assets/images/view_images.png)
+![Image title](../assets/images/view_images.png)
 
 Graphs of the training loss and validation accuracy can also be gathered with the addition of 2 lines of code:
 ```bash
@@ -59,15 +62,15 @@ if rank == 0:
 ```
 In TensorBoard, the collected data will be visualized similar to the following:
 
-![Image title](assets/images/loss.png)
+![Image title](../assets/images/loss.png)
 
-For a full example that integrates TensorBoard to the DDP script, have a look at [tensorboard_ddp_visualtransformer.py](../tensorboard_ddp_visualtransformer.py). For the batch script there are no changes required except for replacing [ddp_visualtransformer.py](../ddp_visualtransformer.py) with [tensorboard_ddp_visualtransformer.py](../tensorboard_ddp_visualtransformer.py).
+For a full example that integrates TensorBoard to the DDP script, have a look at [tensorboard_ddp_visualtransformer.py](tensorboard_ddp_visualtransformer.py). For the batch script there are no changes required except for replacing [ddp_visualtransformer.py](../multi-gpu-and-node/ddp_visualtransformer.py) with [tensorboard_ddp_visualtransformer.py](tensorboard_ddp_visualtransformer.py).
 
 ## Visualizing the logs
 
 TensorBoard can be used on LUMI via the [web interface](https://docs.lumi-supercomputer.eu/runjobs/webui/) by selecting "TensorBoard" from the "Apps" menu. Once you have the logs generated during execution, you can launch the TensorBoard server on a compute node, display the GUI and analyze the run.
 
-![Image title](assets/images/web_interface_tensorboard.png)
+![Image title](../assets/images/web_interface_tensorboard.png)
 
 
 To launch it, select the log directory where you have data to visualize, which in this case would be the path to the `runs` directory, and the resources for the Slurm job.
@@ -76,12 +79,12 @@ Note that TensorBoard is very memory intensive but has low CPU usage.
 
  ### Table of contents
 
-- [Home](index.md)
-- [QuickStart](quickstart.md)
-- [Setting up your own environment](containers.md)
-- [File formats for training data](file_formats.md) 
-- [Data Storage Options](data_storage.md)
-- [Multi-GPU and Multi-Node Training](multi_gpu_and_node.md)
-- [Monitoring and Profiling jobs](profiling.md)
-- [TensorBoard visualization](tensorboard_visualization.md)
-- [MLflow visualization](mlflow_visualization.md)
+- [Home](../README.md)
+- [QuickStart](../quickstart/quickstart.md)
+- [Setting up your own environment](../setting-up-environment/setup_environment.md)
+- [File formats for training data](../file-formats/file_formats.md) 
+- [Data Storage Options](../data-storage/data_storage.md)
+- [Multi-GPU and Multi-Node Training](../multi-gpu-and-node/multi_gpu_and_node.md)
+- [Monitoring and Profiling jobs](../monitoring-and-profiling/profiling.md)
+- [TensorBoard visualization](../TensorBoard-visualization/tensorboard_visualization.md)
+- [MLflow visualization](../MLflow-visualization/mlflow_visualization.md)

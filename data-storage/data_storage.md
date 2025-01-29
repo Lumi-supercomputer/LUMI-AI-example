@@ -1,5 +1,8 @@
 # Data Storage Options
 
+> [!NOTE]  
+> If you wish to run the included examples on LUMI, have a look at the [quickstart](../quickstart/quickstart.md) chapter for instructions on how to set up the required environment.
+
 This section describes the most useful data storage options for AI users on LUMI.
 
 Machine learning frameworks generally make extensive use of parallel processing to shorten time to obtain results. With the increased number of nodes available for computations, a single storage target might become a bottleneck for I/O, especially when large amounts of data are to be accessed.
@@ -49,7 +52,7 @@ For tasks which can make use of a non-distributed filesystem, on a single node, 
 
 The average read from RAM is 7800 MB/second. The average write into RAM is 2900 MB/second. Multiple readers / writers do not significantly increase these values, as the local RAM data bus is the bottleneck.
 
-An example of using RAMfs for the visualtransformer script can be found in [run_ramfs.sh](../run_ramfs.sh) in tandem with [visualtransformer_ramfs.py](../visualtransformer_ramfs.py)
+An example of using RAMfs for the visualtransformer script can be found in [run_ramfs.sh](run_ramfs.sh) in tandem with [visualtransformer_ramfs.py](visualtransformer_ramfs.py)
 
 
 ### Further reading
@@ -59,12 +62,12 @@ An example of using RAMfs for the visualtransformer script can be found in [run_
 
  ### Table of contents
 
-- [Home](index.md)
-- [QuickStart](quickstart.md)
-- [Setting up your own environment](containers.md)
-- [File formats for training data](file_formats.md) 
-- [Data Storage Options](data_storage.md)
-- [Multi-GPU and Multi-Node Training](multi_gpu_and_node.md)
-- [Monitoring and Profiling jobs](profiling.md)
-- [TensorBoard visualization](tensorboard_visualization.md)
-- [MLflow visualization](mlflow_visualization.md)
+- [Home](../README.md)
+- [QuickStart](../quickstart/quickstart.md)
+- [Setting up your own environment](../setting-up-environment/setup_environment.md)
+- [File formats for training data](../file-formats/file_formats.md) 
+- [Data Storage Options](../data-storage/data_storage.md)
+- [Multi-GPU and Multi-Node Training](../multi-gpu-and-node/multi_gpu_and_node.md)
+- [Monitoring and Profiling jobs](../monitoring-and-profiling/profiling.md)
+- [TensorBoard visualization](../TensorBoard-visualization/tensorboard_visualization.md)
+- [MLflow visualization](../MLflow-visualization/mlflow_visualization.md)
