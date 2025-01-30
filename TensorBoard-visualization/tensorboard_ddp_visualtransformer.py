@@ -1,16 +1,19 @@
 import torch
+import numpy as np
+import torchvision
 import os
 import torchvision.transforms as transforms
 from torchvision.models import vit_b_16
 from torch.utils.data import DataLoader, random_split
 from torch.nn.parallel import DistributedDataParallel
-from hdf5_dataset import HDF5Dataset
 import torch.distributed as dist
 from torch.utils.data.distributed import DistributedSampler
 import psutil
-
 from torch.utils.tensorboard import SummaryWriter
 import matplotlib.pyplot as plt
+import sys
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
+from resources.hdf5_dataset import HDF5Dataset
 
 
 # helper function to show an image
@@ -128,7 +131,7 @@ def train_model(model, criterion, optimizer, train_loader, val_loader, epochs=10
             writer.add_scalar("validation accuracy", 100 * correct / total, epoch)
 
 
-with HDF5Dataset("train_images.hdf5", transform=transform) as full_train_dataset:
+with HDF5Dataset("../resources/train_images.hdf5", transform=transform) as full_train_dataset:
 
     # Splitting the dataset into train and validation sets
     train_size = int(0.8 * len(full_train_dataset))
