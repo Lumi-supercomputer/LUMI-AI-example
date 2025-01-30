@@ -1,15 +1,15 @@
 #!/bin/bash
 
-# these modules facilitate the use of singularity containers on LUMI
-module use /appl/local/training/modules/AI-20240529
-module load singularity-userfilesystems singularity-CPEbits
-
-echo "Choosing the right container for the visualtransformer example"
-export SIF=/appl/local/containers/sif-images/lumi-pytorch-rocm-6.2.1-python-3.12-pytorch-20240918-vllm-4075b35.sif
-
-echo "Extending the container with a virtual environment and install h5py."
-singularity exec $SIF bash -c '$WITH_CONDA && python -m venv visualtransformer-env --system-site-packages && source visualtransformer-env/bin/activate && python -m pip install h5py mlflow deepspeed'
+# this module facilitates the use of singularity containers on LUMI
+module use /appl/local/containers/ai-modules
+module load singularity-AI-bindings
 
 # Please have a look at the terms of access (https://www.image-net.org/download.php) before using the dataset
-echo "Copying training data to working directory."
-cp /appl/local/training/LUMI-AI-Guide/tiny-imagenet-dataset.hdf5 train_images.hdf5
+echo "Copying container, training data and squasfs file to ../resources/ directory."
+cp /appl/local/training/LUMI-AI-Guide/tiny-imagenet-dataset.hdf5 ../resources/train_images.hdf5
+cp /appl/local/training/LUMI-AI-Guide/visualtransformer-env.sqsh ../resources/
+cp /appl/local/containers/sif-images/lumi-pytorch-rocm-6.2.1-python-3.12-pytorch-20240918-vllm-4075b35.sif ../resources/
+
+# For the deepspeed examples, we need to copy the following two directories to ../resources/ 
+cp -r /appl/local/training/LUMI-AI-Guide/deepspeed_adam ../resources/
+cp -r /appl/local/training/LUMI-AI-Guide/deepspeed_includes ../resources/
