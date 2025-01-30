@@ -9,7 +9,8 @@ from torchvision.models import vit_b_16
 from torch.utils.data import DataLoader, random_split
 from torch.utils.data.distributed import DistributedSampler
 import sys
-sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
+
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 from resources.hdf5_dataset import HDF5Dataset
 
 parser = argparse.ArgumentParser()
@@ -107,7 +108,9 @@ def train_model(args, model, criterion, optimizer, train_loader, val_loader, epo
         print(f"Time elapsed (s): {time.time()-start}")
 
 
-with HDF5Dataset("../resources/train_images.hdf5", transform=transform) as full_train_dataset:
+with HDF5Dataset(
+    "../resources/train_images.hdf5", transform=transform
+) as full_train_dataset:
 
     # Splitting the dataset into train and validation sets
     train_size = int(0.8 * len(full_train_dataset))

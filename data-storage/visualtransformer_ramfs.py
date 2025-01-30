@@ -4,7 +4,8 @@ import torchvision.transforms as transforms
 from torchvision.models import vit_b_16
 import sys
 import os
-sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
+
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 from resources.hdf5_dataset import HDF5Dataset
 
 
