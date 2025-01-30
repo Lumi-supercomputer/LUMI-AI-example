@@ -71,3 +71,4 @@ Once the session has started you can see graphs for loss and accuracy similar to
 - [Multi-GPU and Multi-Node Training](../multi-gpu-and-node/README.md)
 - [Monitoring and Profiling jobs](../monitoring-and-profiling/README.md)
 - [TensorBoard visualization](../TensorBoard-visualization/README.md)
+- [MLflow visualization](../MLflow-visualization/READMe.md)
