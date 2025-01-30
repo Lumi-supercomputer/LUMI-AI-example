@@ -26,7 +26,7 @@ watch -n1 rocm-smi
 
 The output will look similar to the following:
 
-![Image title](../assets/rocm-smi-1-gpu.png)
+![Image title](../assets/images/rocm-smi-1-gpu.png)
 
 The `rocm-smi` tool shows multiple useful metrics such as GPU utilization, memory usage, temperature, and power usage. The most intuitive metrics might be GPU utilization and memory usage, they are however not accurate indicators whether the GPU is fully utilized as a kernel waiting idle for data shows in the driver as 100% GPU utilization. The best indicator is instead the drawn power. For a single GPU, a power usage of around 300W is a good indicator that the full GPU is being leveraged. 
 
@@ -37,7 +37,7 @@ sbatch run_ddp.sh
 ```
 `rocm-smi` will now show us the status of all 8 GPUs on the node:
 
-![Image title](../assets/rocm-smi-8-gpu.png)
+![Image title](../assets/images/rocm-smi-8-gpu.png)
 
 All eight devices are now listed in the output. Note that power consumption is only listed for half of the devices. This is due to the fact that one MI250x GPU consists of two graphical compute dies (GCD). In the context of `rocm-smi` and PyTorch in general, every GCD is listed as a separate GPU, but the power budget is shared between two GCDs. When both GPUs are fully utilized, the power consumption will be around 500W.
 
@@ -63,7 +63,7 @@ if prof:
 ```
 Have a look at the [visualtransformer_profiled.py](visualtransformer_profiled.py) script for a full example. The output of the profiling will be saved in a `trace.json` file. We can visualize the trace using the Chrome browser by navigating to [ui.perfetto.dev/](https://ui.perfetto.dev/) and loading the `trace.json` file. The trace will show us the time spent in each function call, and will look similar to the following:
 
-![Image title](../assets/perfetto-trace.png)
+![Image title](../assets/images/perfetto-trace.png)
 
 Note that chrome tabs are usually limited to around 2 GB of memory usage and that the trace files can become quite large and easily exceed this limit. It is therefore recommended to only profile a small part of the code that we are particularly interested in and not the full training loop.
 
@@ -74,11 +74,11 @@ If the framework-level profiling is not sufficient and you want to investigate h
  ### Table of contents
 
 - [Home](../README.md)
-- [QuickStart](../quickstart/quickstart.md)
-- [Setting up your own environment](../setting-up-environment/setup_environment.md)
-- [File formats for training data](../file-formats/file_formats.md) 
-- [Data Storage Options](../data-storage/data_storage.md)
-- [Multi-GPU and Multi-Node Training](../multi-gpu-and-node/multi_gpu_and_node.md)
-- [Monitoring and Profiling jobs](../monitoring-and-profiling/profiling.md)
-- [TensorBoard visualization](../TensorBoard-visualization/tensorboard_visualization.md)
-- [MLflow visualization](../MLflow-visualization/mlflow_visualization.md)
+- [QuickStart](../quickstart/README.md)
+- [Setting up your own environment](../setting-up-environment/README.md)
+- [File formats for training data](../file-formats/README.md) 
+- [Data Storage Options](../data-storage/README.md)
+- [Multi-GPU and Multi-Node Training](../multi-gpu-and-node/README.md)
+- [Monitoring and Profiling jobs](../monitoring-and-profiling/README.md)
+- [TensorBoard visualization](../TensorBoard-visualization/README.md)
+- [MLflow visualization](../MLflow-visualization/READMe.md)
