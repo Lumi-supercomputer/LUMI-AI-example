@@ -1,5 +1,5 @@
 #!/bin/bash
-#SBATCH --account=project_462000002  # project account to bill 
+#SBATCH --account=project_xxxxxxxxx  # project account to bill 
 #SBATCH --partition=dev-g            # other options are small-g and standard-g
 #SBATCH --gpus-per-node=1            # Number of GPUs per node (max of 8)
 #SBATCH --ntasks-per-node=1          # Use one task for one GPU
