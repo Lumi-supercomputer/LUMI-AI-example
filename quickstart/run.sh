@@ -7,9 +7,14 @@
 #SBATCH --mem-per-gpu=60G            # CPU RAM per GPU (GPU memory is always 64GB per GPU)
 #SBATCH --time=1:00:00               # time limit
 
-module use /appl/local/training/modules/AI-20240529
-module load singularity-userfilesystems singularity-CPEbits
+# this module facilitates the use of singularity containers on LUMI
+module use  /appl/local/containers/ai-modules
+module load singularity-AI-bindings
 
-CONTAINER=/appl/local/containers/sif-images/lumi-pytorch-rocm-6.2.1-python-3.12-pytorch-20240918-vllm-4075b35.sif
+# choose container that is copied over by set_up_environment.sh
+CONTAINER=../resources/lumi-pytorch-rocm-6.2.1-python-3.12-pytorch-20240918-vllm-4075b35.sif
 
-srun singularity exec $CONTAINER bash -c '$WITH_CONDA && source visualtransformer-env/bin/activate && python visualtransformer.py'
+# add path to additional packages in squasfs file
+export SINGULARITYENV_PREPEND_PATH=/user-software/bin
+# bind squashfs file into container and run python script inside container 
+singularity exec -B ../resources/visualtransformer-env.sqsh:/user-software:image-src=/ $CONTAINER python visualtransformer.py
