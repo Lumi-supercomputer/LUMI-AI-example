@@ -1,7 +1,7 @@
 # Data Storage Options
 
 > [!NOTE]  
-> If you wish to run the included examples on LUMI, have a look at the [quickstart](../quickstart/quickstart.md) chapter for instructions on how to set up the required environment.
+> If you wish to run the included examples on LUMI, have a look at the [quickstart](../quickstart/README.md) chapter for instructions on how to set up the required environment.
 
 This section describes the most useful data storage options for AI users on LUMI.
 
@@ -70,4 +70,4 @@ An example of using RAMfs for the visualtransformer script can be found in [run_
 - [Multi-GPU and Multi-Node Training](../multi-gpu-and-node/README.md)
 - [Monitoring and Profiling jobs](../monitoring-and-profiling/README.md)
 - [TensorBoard visualization](../TensorBoard-visualization/README.md)
-- [MLflow visualization](../MLflow-visualization/READMe.md)
+- [MLflow visualization](../MLflow-visualization/README.md)

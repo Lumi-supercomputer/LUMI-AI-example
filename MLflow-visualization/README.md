@@ -1,7 +1,7 @@
 # MLflow visualization
 
 > [!NOTE]  
-> If you wish to run the included examples on LUMI, have a look at the [quickstart](../quickstart/quickstart.md) chapter for instructions on how to set up the required environment.
+> If you wish to run the included examples on LUMI, have a look at the [quickstart](../quickstart/README.md) chapter for instructions on how to set up the required environment.
 
 [MLflow](https://www.mlflow.org/) is an open source tool for tracking experiments and models in machine learning projects. MLflow can be easily installed with `pip install mlflow`. Adapting your code to use MLflow requires minimal modification, and the results can be easily displayed using the web interface.
 
@@ -71,4 +71,4 @@ Once the session has started you can see graphs for loss and accuracy similar to
 - [Multi-GPU and Multi-Node Training](../multi-gpu-and-node/README.md)
 - [Monitoring and Profiling jobs](../monitoring-and-profiling/README.md)
 - [TensorBoard visualization](../TensorBoard-visualization/README.md)
-- [MLflow visualization](../MLflow-visualization/READMe.md)
+- [MLflow visualization](../MLflow-visualization/README.md)

@@ -99,4 +99,4 @@ We see a speed-up of roughly 28% for LMDB compared to squashfs.
 - [Multi-GPU and Multi-Node Training](../multi-gpu-and-node/README.md)
 - [Monitoring and Profiling jobs](../monitoring-and-profiling/README.md)
 - [TensorBoard visualization](../TensorBoard-visualization/README.md)
-- [MLflow visualization](../MLflow-visualization/READMe.md)
+- [MLflow visualization](../MLflow-visualization/README.md)
