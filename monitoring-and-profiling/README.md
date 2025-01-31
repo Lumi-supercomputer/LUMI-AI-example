@@ -61,7 +61,7 @@ if prof:
     prof.stop()
     prof.export_chrome_trace("trace.json")
 ```
-Have a look at the [visualtransformer_profiled.py](visualtransformer_profiled.py) script for a full example. The output of the profiling will be saved in a `trace.json` file. We can visualize the trace using the Chrome browser by navigating to [ui.perfetto.dev/](https://ui.perfetto.dev/) and loading the `trace.json` file. The trace will show us the time spent in each function call, and will look similar to the following:
+Have a look at the [visualtransformer_profiled.py](visualtransformer_profiled.py) script for a full example. The output of the profiling will be saved in a `trace.json` file. We can visualize the trace using the Chrome browser by copying the `trace.json` file to our local machine, navigating to [ui.perfetto.dev/](https://ui.perfetto.dev/) and loading the `trace.json` file. The trace will show us the time spent in each function call, and will look similar to the following:
 
 ![Image title](../assets/images/perfetto-trace.png)
 
