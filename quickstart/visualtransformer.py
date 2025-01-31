@@ -29,6 +29,7 @@ def train_model(model, criterion, optimizer, train_loader, val_loader, epochs=10
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
     model.to(device)
     for epoch in range(epochs):
+        print(f"Starting epoch {epoch+1}.")
         model.train()
         running_loss = 0.0
         for images, labels in train_loader:
