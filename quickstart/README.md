@@ -10,10 +10,10 @@ git clone https://github.com/Lumi-supercomputer/LUMI-AI-Guide.git
 
 We recommend using your `/project/` or `/scratch/` directory of your project to clone the repository as your home directory (`$HOME`) has a capacity of 20 GB and is intended to store user configuration files and personal data.
 
-Next, navigate to the `LUMI-AI-Guide` directory:
+Next, navigate to the `LUMI-AI-Guide/quickstart` directory:
 
 ```bash
-cd LUMI-AI-Guide
+cd LUMI-AI-Guide/quickstart
 ```
 
 We now need to setup the environment if we wish to run the included python scripts. We will use one of the provided PyTorch containers that we extend with additional packages (this step will be explained in more detail in the next chapter [Setting up your own environment](../setting-up-environment/README.md)). The fastest way to achieve this is to use the provided script `set_up_environment.sh`:
