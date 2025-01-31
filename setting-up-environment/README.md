@@ -20,6 +20,7 @@ In this example we will use the second option as this approach is used in the [L
 
 The latest versions of the provided containers can be found at `/appl/local/containers/sif-images`. This folder includes base containers, following the naming convention `lumi-rocm-<rocm version number>.sif` and containers that already include a ML framework and some commonly used packages. The names of the `.sif` files indicate which ML framework is installed and which versions are used for `ROCm`, `Python` and the framework. 
 
+If you choose one of the containers in `/appl/local/containers/sif-images/` for your own project, we recommend copying the container to your working directory as the containers are constantly updated and the newer containers might not be compatible with your setup.
 
 ## Interacting with a containerized environment
 
@@ -76,12 +77,21 @@ This will create an `h5-env` environment in the working directory. The `--system
 singularity exec $SIF bash -c '$WITH_CONDA && h5-env/bin/activate && python my-script.py
 ```
 
-This approach allows extending environment without rebuilding the container from scratch every time a new package is added. The drawback is that the virtual environment is disjoint from the container which makes it difficult to move as the path to the virtual environment needs to be updated accordingly. Moreover, installing Python packages creates typically thousands of small files. This puts a lot of strain on the Lustre file system and might exceed your file quota. This problem can be solved by creating a new container using the [cotainr tool](https://lumi-supercomputer.github.io/LUMI-training-materials/ai-20241126/extra_06_BuildingContainers/) or turning the virtual environment directory into a [SquashFS file](https://github.com/Lumi-supercomputer/Getting_Started_with_AI_workshop/blob/main/07_Extending_containers_with_virtual_environments_for_faster_testing/examples/extending_containers_with_venv.md).
+This approach allows extending environment without rebuilding the container from scratch every time a new package is added. The drawback is that the virtual environment is disjoint from the container which makes it difficult to move as the path to the virtual environment needs to be updated accordingly. Moreover, installing Python packages creates typically thousands of small files. This puts a lot of strain on the Lustre file system and might exceed your file quota. This problem can be solved by creating a new container using the [cotainr tool](https://lumi-supercomputer.github.io/LUMI-training-materials/ai-20241126/extra_06_BuildingContainers/) or turning the virtual environment directory into a [SquashFS file](https://github.com/Lumi-supercomputer/Getting_Started_with_AI_workshop/blob/main/07_Extending_containers_with_virtual_environments_for_faster_testing/examples/extending_containers_with_venv.md). The examples included in this repository use the [SquashFS](https://github.com/Lumi-supercomputer/Getting_Started_with_AI_workshop/blob/main/07_Extending_containers_with_virtual_environments_for_faster_testing/examples/extending_containers_with_venv.md) option.
 
 ## Custom images
 
 In theory, you can also bring your own container images or convert images from other registries (DockerHub for instance) to the singularity format. In this case it remains your responsibility to keep the container compatible with LUMI's hardware and system environment. We strongly recommend building your containers on top of the  LUMI base images provided. 
 
+## `singularity-AI-bindings` module
+
+To give LUMI containers access to the Slingshot network for good RCCL and MPI performance and access to the file system of the working directory, some additional bindings are required. As it can be quite cumbersome to set these bindings manually, we provide a module that does this for you. You can load the module with the following commands:
+```
+module use /appl/local/containers/ai-modules
+module load singularity-AI-bindings
+```
+If you prefer to set the bindings manually, we recommend taking a look at the [Running containers on LUM](https://lumi-supercomputer.github.io/LUMI-training-materials/ai-20240529/extra_05_RunningContainers/) lecture from the [LUMI AI workshop material](https://github.com/Lumi-supercomputer/Getting_Started_with_AI_workshop).
+ 
  ### Table of contents
 
 - [Home](../README.md)
