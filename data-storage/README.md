@@ -9,7 +9,7 @@ Machine learning frameworks generally make extensive use of parallel processing 
 
 To that end LUMI employs a parallel filesystem, [Lustre](https://docs.lumi-supercomputer.eu/storage/parallel-filesystems/lustre/), which allows for storage and retrieval of files in a distributed way, using striping to distribute files across multiple Object Storage Targets (OSTs). These can be then accessed from multiple compute nodes in a parallel way, and thus significantly increase I/O performance.
 
-The main available filesystems on LUMI which have high priority for computations requiring high-throughput I/O are [LUMI-P](https://docs.lumi-supercomputer.eu/storage/parallel-filesystems/lumip/), [LUMI-F](https://docs.lumi-supercomputer.eu/storage/parallel-filesystems/lumip/) and RAM FS. In the context of massive parallel processing access, [LUMI-O](https://docs.lumi-supercomputer.eu/storage/lumio/) provides generally significantly poorer performance, and so is not considered in this documentation.
+The main available filesystems on LUMI which have high priority for computations requiring high-throughput I/O are [LUMI-P](https://docs.lumi-supercomputer.eu/storage/parallel-filesystems/lumip/), [LUMI-F](https://docs.lumi-supercomputer.eu/storage/parallel-filesystems/lumif/) and RAM FS. In the context of massive parallel processing access, [LUMI-O](https://docs.lumi-supercomputer.eu/storage/lumio/) provides generally significantly poorer performance, and so is not considered in this documentation.
 
 ## LUMI-P vs LUMI-F vs RAMfs - Overview
 ### LustreFS
