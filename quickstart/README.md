@@ -28,7 +28,7 @@ If you receive a permission denied error, you can make the script executable by 
 chmod +x set_up_environment.sh
 ```
 
-After the script has finished, you should see now some new files in the `LUMI-AI-Guide/resources/` directory. These files are the PyTorch container (the file ending with `.sif`), a squashFs file containing additional python packages (`visualtransformer-env.sqsh`), the training dataset in a `hdf5` file format (`train_images.hdf5`) and two directories starting with `deepspeed_*` (these directories are needed for running the deepspeed example and are explained in the [Multi-GPU and Multi-Node Training](../multi-gpu-and-node/README.md) chapter). 
+After the script has finished, you should see now some new files in the `LUMI-AI-Guide/resources/` directory. These files are the PyTorch container (the file ending with `.sif`), a squashFs file containing additional python packages (`visualtransformer-env.sqsh`), the training dataset in a `hdf5` file format (`train_images.hdf5`) and two directories starting with `deepspeed_*` (these directories are needed for running the deepspeed example). 
 
 For this example, we use the [Tiny ImageNet Dataset](https://paperswithcode.com/dataset/tiny-imagenet) which is already transformed into the file system friendly hdf5 format (Chapter [File formats for training data](../file-formats/README.md) explains in detail why this step is necessary). Please have a look at the terms of access for the ImageNet Dataset [here](https://www.image-net.org/download.php).
 
