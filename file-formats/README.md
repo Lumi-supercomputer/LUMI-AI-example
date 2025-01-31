@@ -1,5 +1,8 @@
 # File formats for training data
 
+> [!NOTE]  
+> The Python and shell scripts in the `file-formats` directory are used for the benchmarks presented in this chapter. Many of them require packages that are not included in the environment that is set up in the [QuickStart](../quickstart/README.md) chapter. If you wish to install additional packages and run these scripts yourself, have a look at the [Setting up your own environment](../setting-up-environment/README.md) chapter.
+
 ## Introduction
 
 Generally, there are no one-size-fits-all file format suitable for all machine learning and artificial intelligence data. Different high-performance file formats have different strategies for increasing the read/write throughput, and these strategies might not be compatible with the format of the data (e.g. variable image sizes). As a result, this compatibility must be determined before an optimal file format can be chosen. 
@@ -21,7 +24,7 @@ mksquashfs ILSVRC/ imagenet.squashfs
 Then the `.squashfs` file is ready to be transferred to LUMI. This can be done in a variety of ways as seen in the [LUMI documentation](https://docs.lumi-supercomputer.eu/firststeps/movingdata/), where for this purpose `rsync` is particularly useful with the flags `--partial` and `--progress --stats` to keep partial transfers and display detailed transfer progress stats of the large single file. 
 
 ### Running PyTorch
-Running PyTorch with data stored in the `squashfs` file format is particularly simple because we are already utilizing containers which were introduced in chapter [Setting up your own environment](../setting-up-environment/setup_environment.md). The singularity container supports [mounting](https://docs.sylabs.io/guides/3.7/user-guide/bind_paths_and_mounts.html#squashfs-image-files) the `squashfs` file directly into the file system when running the container,
+Running PyTorch with data stored in the `squashfs` file format is particularly simple because we are already utilizing containers which were introduced in chapter [Setting up your own environment](../setting-up-environment/README.md). The singularity container supports [mounting](https://docs.sylabs.io/guides/3.7/user-guide/bind_paths_and_mounts.html#squashfs-image-files) the `squashfs` file directly into the file system when running the container,
 ```bash
 singularity run -B inputs.squashfs:/input-data:image-src=/ mycontainer.sif
 ```
