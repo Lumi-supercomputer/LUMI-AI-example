@@ -1,6 +1,6 @@
 #!/bin/bash
 #SBATCH --account=project_xxxxxxxxx  # project account to bill 
-#SBATCH --partition=dev-g            # other options are small-g and standard-g
+#SBATCH --partition=small-g          # other options are small-g and standard-g
 #SBATCH --gpus-per-node=1            # Number of GPUs per node (max of 8)
 #SBATCH --ntasks-per-node=1          # Use one task for one GPU
 #SBATCH --cpus-per-task=7            # Use 1/8 of all available 56 CPUs on LUMI-G nodes
