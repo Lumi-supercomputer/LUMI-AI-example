@@ -74,7 +74,7 @@ Singularity> $WITH_CONDA
 This will create an `h5-env` environment in the working directory. The `--system-site-packages` flag gives the virtual environment access to the packages from the container. Now one can execute script with and import the `h5py` package. To execute script called `my-script.py` within the container using the virtual environment use the additional activation command:
 
 ```
-singularity exec $SIF bash -c '$WITH_CONDA && h5-env/bin/activate && python my-script.py
+singularity exec $SIF bash -c '$WITH_CONDA && source h5-env/bin/activate && python my-script.py
 ```
 
 This approach allows extending environment without rebuilding the container from scratch every time a new package is added. The drawback is that the virtual environment is disjoint from the container which makes it difficult to move as the path to the virtual environment needs to be updated accordingly. Moreover, installing Python packages creates typically thousands of small files. This puts a lot of strain on the Lustre file system and might exceed your file quota. This problem can be solved by creating a new container using the [cotainr tool](https://lumi-supercomputer.github.io/LUMI-training-materials/ai-20241126/extra_06_BuildingContainers/) or turning the virtual environment directory into a [SquashFS file](https://github.com/Lumi-supercomputer/Getting_Started_with_AI_workshop/blob/main/07_Extending_containers_with_virtual_environments_for_faster_testing/examples/extending_containers_with_venv.md). The examples included in this repository use the [SquashFS](https://github.com/Lumi-supercomputer/Getting_Started_with_AI_workshop/blob/main/07_Extending_containers_with_virtual_environments_for_faster_testing/examples/extending_containers_with_venv.md) option.
