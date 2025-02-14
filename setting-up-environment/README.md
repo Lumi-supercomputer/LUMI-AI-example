@@ -11,7 +11,7 @@ The motivation for using containers on LUMI is twofold:
 
 Note that the first point implies that LUMI's containers are not portable to other machines, which is usually expected from containers, as these images are unlikely to run on other systems.
 
-The are two different ways how containers that are provided by the LUMI User Support Team can be accessed:
+There are two different ways how containers that are provided by the LUMI User Support Team can be accessed:
 
  - [Through modules and wrapper scripts generated via EasyBuild](https://lumi-supercomputer.github.io/LUMI-EasyBuild-docs/p/PyTorch/#module-and-wrapper-scripts)
  - Directly, with you taking care of all bindings and all necessary environment variables.
@@ -24,10 +24,10 @@ If you choose one of the containers in `/appl/local/containers/sif-images/` for 
 
 ## Interacting with a containerized environment
 
-Python environment from an image can be accessed either interactively by spawning a shell instance within a container (`singularity shell` command) or by executing commands within a container (`singularity exec` command). Do not expect actual runscripts (`singularity run` command), you need to execute your own script inside the container. There are also common assumptions used:
+The Python environment from an image can be accessed either interactively by spawning a shell instance within a container (`singularity shell` command) or by executing commands within a container (`singularity exec` command). Do not expect actual runscripts (`singularity run` command), you need to execute your own script inside the container. There are also common assumptions used:
 
  - most of base images on LUMI use conda (Miniconda) environments that need to be activated with the `$WITH_CONDA` command,
- - there is a basic compiler toolchain included, note specific compiler commands (`gcc-XX` for scpefic versions installed).
+ - there is a basic compiler toolchain included, note specific compiler commands (`gcc-XX` for specific versions installed).
 
 To inspect which specific packages are included in the images you can use this simple command:
 
@@ -37,7 +37,7 @@ singularity exec $SIF bash -c '$WITH_CONDA && pip list'
 ``` 
 
 ## Singularity and Slurm
-To run a program inside a container on a GPU node, you need to prepend the singularity command with the `srun` launcher. Plese note that multiple srun tasks will spawn independent instances of the same container image. 
+To run a program inside a container on a GPU node, you need to prepend the singularity command with the `srun` launcher. Please note that multiple srun tasks will spawn independent instances of the same container image. 
 
 We can check whether the selected PyTorch image detects the allocated GPUs with the following: 
 
@@ -60,7 +60,7 @@ For more information on SLURM on LUMI, please visit the [SLURM quickstart page i
 
 ## Installing additional Python packages in a container 
 
-You might find yourself in a situation where none of the provided containers contain all Python packages you need. One possible way of adding custom packages not included in the image is to use virtual environment on top of the conda environment. For this example, we need to add the HDF5 Python package `h5py` to the environment:
+You might find yourself in a situation where none of the provided containers contain all Python packages you need. One possible way of adding custom packages not included in the image is to use a virtual environment on top of the conda environment. For this example, we need to add the HDF5 Python package `h5py` to the environment:
 
 ```
 export SIF=/appl/local/containers/sif-images/lumi-pytorch-rocm-6.2.1-python-3.12-pytorch-20240918-vllm-4075b35.sif
@@ -90,7 +90,7 @@ To give LUMI containers access to the Slingshot network for good RCCL and MPI pe
 module use /appl/local/containers/ai-modules
 module load singularity-AI-bindings
 ```
-If you prefer to set the bindings manually, we recommend taking a look at the [Running containers on LUM](https://lumi-supercomputer.github.io/LUMI-training-materials/ai-20240529/extra_05_RunningContainers/) lecture from the [LUMI AI workshop material](https://github.com/Lumi-supercomputer/Getting_Started_with_AI_workshop).
+If you prefer to set the bindings manually, we recommend taking a look at the [Running containers on LUMI](https://lumi-supercomputer.github.io/LUMI-training-materials/ai-20240529/extra_05_RunningContainers/) lecture from the [LUMI AI workshop material](https://github.com/Lumi-supercomputer/Getting_Started_with_AI_workshop).
  
  ### Table of contents
 
