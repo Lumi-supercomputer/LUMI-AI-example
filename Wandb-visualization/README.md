@@ -62,9 +62,9 @@ If everything is correct, wandb will produce some information about the tracking
 wandb: Currently logged in as: <user> (<organization>) to https://api.wandb.ai. Use `wandb login --relogin` to force relogin
 wandb: Using wandb-core as the SDK backend.  Please refer to https://wandb.me/wandb-core for more information.
 wandb: - Waiting for wandb.init()...^Mwandb: \ Waiting for wandb.init()...^Mwandb: Tracking run with wandb version 0.19.5
-wandb: Run data is saved locally in /pfs/lustrep1/scratch/project_xxxxxxxxx/tiks/wandb/wandb/run-20250217_125546-0ztzgx0x
+wandb: Run data is saved locally in /pfs/lustrep1/scratch/project_xxxxxxxxx/dir/wandb/wandb/run-20250217_125546-0ztzgx0x
 wandb: Run `wandb offline` to turn off syncing.
-wandb: Syncing run fresh-resonance-1
+wandb: Syncing run Example run
 wandb: ⭐️ View project at https://wandb.ai/<organization>/LUMI-visualtransformer
 wandb: 🚀 View run at https://wandb.ai/<organization>/LUMI-visualtransformer/runs/0ztzgx0x
 
