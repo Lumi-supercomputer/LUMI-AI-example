@@ -103,3 +103,4 @@ If you prefer to set the bindings manually, we recommend taking a look at the [R
 - [Monitoring and Profiling jobs](../monitoring-and-profiling/README.md)
 - [TensorBoard visualization](../TensorBoard-visualization/README.md)
 - [MLflow visualization](../MLflow-visualization/README.md)
+- [Wandb visualization](../Wandb-visualization/README.md)
